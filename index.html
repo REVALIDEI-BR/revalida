@@ -17,11 +17,16 @@
 body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   background:var(--paper);color:var(--ink);line-height:1.55;font-feature-settings:"tnum" 1}
 .wrap{max-width:880px;margin:0 auto;padding:20px 16px 64px}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--signal);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:16px;height:2px;background:var(--ambar-claro);border-radius:2px}
 h1{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 h2{font-size:21px;font-weight:700;letter-spacing:-.01em}
 .lead{color:var(--ink-soft);font-size:15px;margin-top:6px}
-.card{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:20px;box-shadow:var(--sombra)}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:22px;
+  box-shadow:var(--sombra);position:relative}
+#caixa-questao::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;
+  border-radius:16px 16px 0 0;background:linear-gradient(90deg,var(--signal),var(--ambar-claro))}
 .card+.card{margin-top:14px}
 .screen{display:none}
 .screen.on{display:block;animation:entra .28s ease}
@@ -58,7 +63,7 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .marca-nome{font-size:19px;font-weight:800;letter-spacing:-.02em;color:#fff;text-align:left}
 .marca-nome small{display:block;font-size:9px;font-weight:600;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:1px}
-.tarja{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+.tarja{display:inline-block;margin-top:0;font-size:11.5px;font-weight:700;letter-spacing:.09em;
   text-transform:uppercase;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
   color:var(--ambar-claro);padding:6px 14px;border-radius:99px;margin-bottom:20px}
 .manchete{font-size:clamp(30px,5.4vw,50px);font-weight:800;letter-spacing:-.032em;
@@ -126,6 +131,37 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
   .chamada-final{padding:32px 20px}
 }
 
+/* planos */
+.planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:6px}
+.plano{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:24px 22px;
+  position:relative;display:flex;flex-direction:column;transition:.2s}
+.plano:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(16,36,58,.1)}
+.plano.destaque{border:2px solid var(--signal);box-shadow:0 12px 32px rgba(29,111,208,.14)}
+.plano.destaque::before{content:"Mais escolhido";position:absolute;top:-11px;left:50%;
+  transform:translateX(-50%);background:var(--ambar-claro);color:#3A2607;font-size:10.5px;
+  font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;border-radius:99px}
+.plano-nome{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:12px}
+.plano-preco{display:flex;align-items:baseline;gap:3px;margin-bottom:4px}
+.plano-preco .cifra{font-size:17px;font-weight:700;color:var(--ink-soft)}
+.plano-preco .valor{font-size:40px;font-weight:800;letter-spacing:-.035em;line-height:1}
+.plano-periodo{font-size:13.5px;color:var(--ink-soft);margin-bottom:14px}
+.plano-equiv{font-size:12.5px;color:var(--signal);font-weight:600;margin-bottom:16px;min-height:19px}
+.plano ul{list-style:none;margin:0 0 20px;padding:0;flex:1}
+.plano li{font-size:13.5px;color:var(--ink-soft);padding:6px 0 6px 24px;position:relative;line-height:1.5}
+.plano li::before{content:"";position:absolute;left:0;top:12px;width:13px;height:7px;
+  border-left:2px solid var(--certo);border-bottom:2px solid var(--certo);
+  transform:rotate(-45deg);border-radius:1px}
+.plano button{width:100%}
+
+.como-pagar{background:var(--surface);border:1px dashed var(--rule);border-radius:14px;
+  padding:20px;margin-top:16px}
+.passo-pgto{display:flex;gap:13px;align-items:flex-start;margin-bottom:13px}
+.passo-pgto:last-child{margin-bottom:0}
+.passo-pgto b{flex:0 0 25px;height:25px;border-radius:8px;background:var(--laranja);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800}
+.passo-pgto span{font-size:13.5px;color:var(--ink-soft);line-height:1.55;padding-top:3px}
+
 /* painel admin */
 .linha-acesso{display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
   border-radius:11px;padding:12px 14px;margin-bottom:8px;background:var(--surface);flex-wrap:wrap}
@@ -160,16 +196,16 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .troca button{background:none;border:none;color:var(--signal);font-weight:600;text-decoration:underline;padding:2px;font-size:13.5px}
 
 /* topo */
-.topo{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;
+.topo{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 17px;
   background:var(--surface);border:1px solid var(--rule);border-radius:12px;margin-bottom:14px;
   position:sticky;top:10px;z-index:20;box-shadow:var(--sombra);flex-wrap:wrap}
 .metricas{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .metrica{display:flex;flex-direction:column;line-height:1.2}
-.metrica b{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.metrica b{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .metrica span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
 .metrica.pulada b{color:var(--skip)}
-.barra{height:4px;background:var(--rule);border-radius:99px;overflow:hidden;margin-top:12px}
-.barra i{display:block;height:100%;background:var(--signal);transition:width .35s cubic-bezier(.4,0,.2,1)}
+.barra{height:5px;background:var(--rule);border-radius:99px;overflow:hidden;margin-top:16px}
+.barra i{display:block;height:100%;background:linear-gradient(90deg,var(--signal),var(--ambar-claro));transition:width .35s cubic-bezier(.4,0,.2,1)}
 
 /* ofensiva */
 .faixa-ofensiva{display:flex;align-items:center;gap:14px;background:linear-gradient(100deg,#FEF3E2,#FFFAF3);
@@ -206,9 +242,14 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 /* questão */
 .cabecalho-q{display:flex;justify-content:space-between;align-items:center;gap:12px;
   padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:16px;flex-wrap:wrap}
-.origem{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase}
-.etiqueta-area{font-size:11px;font-weight:700;background:var(--paper);color:var(--ink-soft);
-  padding:3px 9px;border-radius:6px;margin-left:8px;text-transform:none;letter-spacing:0}
+.origem{font-size:10.5px;font-weight:700;letter-spacing:.11em;color:var(--ink-soft);
+  text-transform:uppercase;display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap}
+.origem .ref{background:linear-gradient(135deg,#0E2A57,#1D6FD0);color:#fff;padding:4px 9px;
+  border-radius:6px;letter-spacing:.07em}
+.origem .num{color:var(--ink);font-weight:800;letter-spacing:.04em}
+.etiqueta-area{font-size:10.5px;font-weight:700;background:#FDF3E0;color:var(--skip);
+  padding:4px 9px;border-radius:6px;text-transform:none;letter-spacing:.02em;
+  border:1px solid #F2DCB4}
 .b-marcar{background:none;border:1px solid var(--rule);color:var(--ink-soft);padding:7px 13px;font-size:12px}
 .b-marcar.on{background:#F3EEFC;border-color:var(--marca);color:var(--marca)}
 #caixa-questao{animation:vira .3s ease}
@@ -249,7 +290,7 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* resultado */
 .placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:18px 0}
-.bloco{background:var(--paper);border-radius:11px;padding:15px;text-align:center}
+.bloco{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:16px;text-align:center}
 .bloco b{display:block;font-size:27px;font-weight:800;letter-spacing:-.02em}
 .bloco span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
 .bloco.certo b{color:var(--certo)} .bloco.errado b{color:var(--errado)}
@@ -367,9 +408,9 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
     <div class="cta">
       <button class="b-destaque" onclick="irPara('tela-login')">Entrar na plataforma</button>
-      <button class="b-vidro" onclick="irPara('tela-login')">Entrar</button>
+      <button class="b-vidro" onclick="irPara('tela-planos')">Ver planos</button>
     </div>
-    <p class="selo-gratis">Acesso liberado por email</p>
+    <p class="selo-gratis">A partir de R$ 9,90 · sem fidelidade · <button onclick="irPara('tela-login')" style="background:none;border:none;color:var(--ambar-claro);text-decoration:underline;font-size:13px;padding:0;font-weight:600">já tenho acesso</button></p>
 
     <div class="provas-hero" id="pills-provas"></div>
   </div>
@@ -450,12 +491,95 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
   <div class="chamada-final">
     <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
     <h2 style="position:relative">Comece agora</h2>
-    <p style="position:relative">Entre com o email que foi liberado para você.</p>
-    <button class="b-destaque" style="position:relative" onclick="irPara('tela-login')">Entrar</button>
+    <p style="position:relative">Planos a partir de R$ 9,90 por semana. Sem cartão, sem fidelidade.</p>
+    <button class="b-destaque" style="position:relative" onclick="irPara('tela-planos')">Ver planos</button>
   </div>
 
   <p class="rodape">Questões das provas objetivas do Revalida, publicadas pelo INEP.
     Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.</p>
+</section>
+
+<!-- ===== PLANOS ===== -->
+<section id="tela-planos" class="screen">
+  <div class="hero" style="padding:40px 26px 34px">
+    <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
+    <span class="tarja">Planos</span>
+    <h1 class="manchete" style="font-size:clamp(26px,4.6vw,40px)">Escolha o seu <em>ritmo</em></h1>
+    <p class="sub-capa">Todas as provas, todas as áreas. Sem fidelidade.</p>
+  </div>
+
+  <div class="planos">
+    <div class="plano">
+      <div class="plano-nome">Semanal</div>
+      <div class="plano-preco"><span class="cifra">R$</span><span class="valor">9,90</span></div>
+      <div class="plano-periodo">por semana</div>
+      <div class="plano-equiv">Para a reta final</div>
+      <ul>
+        <li>Acesso completo por 7 dias</li>
+        <li>Gabarito comentado</li>
+        <li>Desempenho por área</li>
+      </ul>
+      <button class="b-neutro" onclick="assinar('Semanal', '9,90')">Assinar</button>
+    </div>
+
+    <div class="plano destaque">
+      <div class="plano-nome">Mensal</div>
+      <div class="plano-preco"><span class="cifra">R$</span><span class="valor">19,90</span></div>
+      <div class="plano-periodo">por mês</div>
+      <div class="plano-equiv">Sai por R$ 4,97 por semana</div>
+      <ul>
+        <li>Acesso completo por 30 dias</li>
+        <li>Gabarito comentado</li>
+        <li>Desempenho por área</li>
+        <li>Refazer só o que errou</li>
+        <li>Histórico em qualquer aparelho</li>
+      </ul>
+      <button class="b-signal" onclick="assinar('Mensal', '19,90')">Assinar</button>
+    </div>
+
+    <div class="plano">
+      <div class="plano-nome">Bimestral</div>
+      <div class="plano-preco"><span class="cifra">R$</span><span class="valor">34,50</span></div>
+      <div class="plano-periodo">a cada dois meses</div>
+      <div class="plano-equiv">Economia de R$ 5,30</div>
+      <ul>
+        <li>Acesso completo por 60 dias</li>
+        <li>Gabarito comentado</li>
+        <li>Desempenho por área</li>
+        <li>Refazer só o que errou</li>
+        <li>Histórico em qualquer aparelho</li>
+      </ul>
+      <button class="b-neutro" onclick="assinar('Bimestral', '34,50')">Assinar</button>
+    </div>
+  </div>
+
+  <div class="como-pagar">
+    <p class="eyebrow" style="margin-bottom:14px">Como funciona</p>
+    <div class="passo-pgto"><b>1</b><span>Escolha o plano e clique em Assinar. Abre um email já preenchido.</span></div>
+    <div class="passo-pgto"><b>2</b><span>Envie o PIX e responda o email com o comprovante.</span></div>
+    <div class="passo-pgto"><b>3</b><span>Seu acesso é liberado e você entra com o mesmo email.</span></div>
+  </div>
+
+  <div class="faixa-secao"><h2>Dúvidas sobre o pagamento</h2></div>
+  <details class="duvida"><summary>Preciso cadastrar cartão?</summary>
+    <p>Não. O pagamento é por PIX, uma vez a cada período. Não fica nada guardado
+       nem é cobrado automaticamente.</p></details>
+  <details class="duvida"><summary>Renova sozinho?</summary>
+    <p>Não. Quando o prazo acaba, o acesso simplesmente para. Se quiser continuar,
+       faz um novo PIX. Sem fidelidade e sem surpresa na fatura.</p></details>
+  <details class="duvida"><summary>Quanto tempo para liberar?</summary>
+    <p>A liberação é feita manualmente, então pode levar algumas horas. Você recebe
+       um aviso assim que estiver valendo.</p></details>
+  <details class="duvida"><summary>E se eu não gostar?</summary>
+    <p>Você tem 7 dias para desistir e pedir o dinheiro de volta, como manda o
+       Código de Defesa do Consumidor. É só responder o mesmo email.</p></details>
+
+  <div class="acoes" style="justify-content:center;margin-top:22px">
+    <button class="b-neutro" onclick="irPara('tela-capa')">← Voltar</button>
+    <button class="b-signal" onclick="irPara('tela-login')">Já tenho acesso</button>
+  </div>
+
+  <p class="rodape">Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.</p>
 </section>
 
 <!-- ===== ADMINISTRAÇÃO ===== -->
@@ -521,7 +645,8 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
     <p class="lead" id="texto-sem-acesso" style="margin-bottom:6px"></p>
     <p class="dica" id="email-sem-acesso"></p>
     <div class="acoes" style="justify-content:center">
-      <button class="b-signal" onclick="location.reload()">Já liberei, recarregar</button>
+      <button class="b-signal" onclick="irPara('tela-planos')">Ver planos</button>
+      <button class="b-neutro" onclick="location.reload()">Já liberei, recarregar</button>
       <button class="b-neutro" onclick="sair()">Sair</button>
     </div>
   </div>
@@ -886,6 +1011,20 @@ async function sair(){
   irPara('tela-login');
 }
 
+/* ================= PLANOS ================= */
+const CONTATO = 'mai.iara95@gmail.com';
+
+function assinar(plano, valor){
+  const assunto = 'Assinatura Revalidei — plano ' + plano;
+  const corpo =
+      'Olá! Quero assinar o plano ' + plano + ' (R$ ' + valor + ').\n\n'
+    + 'Meu email para acesso: \n\n'
+    + 'Envio o comprovante do PIX em seguida.\n';
+  window.location.href = 'mailto:' + CONTATO
+    + '?subject=' + encodeURIComponent(assunto)
+    + '&body=' + encodeURIComponent(corpo);
+}
+
 /* ================= ADMINISTRAÇÃO ================= */
 let ehAdmin = false, listaAcessos = [];
 
@@ -1077,7 +1216,7 @@ async function telaSemAcesso(){
   document.getElementById('texto-sem-acesso').textContent = venceu
     ? 'Seu acesso valeu até ' + new Date(ate + 'T12:00').toLocaleDateString('pt-BR')
       + '. Fale com quem administra para renovar.'
-    : 'Este email ainda não foi liberado. Fale com quem administra a plataforma.';
+    : 'Este email ainda não tem assinatura ativa. Escolha um plano para começar.';
   document.getElementById('email-sem-acesso').textContent = usuario ? usuario.email : '';
   irPara('tela-sem-acesso');
 }
@@ -1319,7 +1458,9 @@ function mostrar(){
   cx.style.animation = 'none'; void cx.offsetWidth; cx.style.animation = '';
 
   document.getElementById('q-origem').innerHTML =
-    q.exam + ' · Questão ' + q.number + '<span class="etiqueta-area">' + q.area + '</span>';
+    '<span class="ref">' + q.exam.replace('Revalida ','Revalida · ') + '</span>'
+    + '<span class="num">Questão ' + q.number + '</span>'
+    + '<span class="etiqueta-area">' + q.area + '</span>';
   document.getElementById('q-texto').textContent = q.question;
   document.getElementById('m-pos').textContent = (atual+1)+'/'+prova.length;
 
@@ -1505,7 +1646,9 @@ function montarGabarito(){
     const estado = acertou?'ok':(sua?'nao':'branco');
     const rotulo = acertou?'Acertou':(sua?'Errou':'Em branco');
 
-    let html = '<div class="item-topo"><span class="origem">'+q.exam+' · Questão '+q.number
+    let html = '<div class="item-topo"><span class="origem">'
+      + '<span class="ref">'+q.exam.replace('Revalida ','Revalida · ')+'</span>'
+      + '<span class="num">Questão '+q.number+'</span>'
       + '<span class="etiqueta-area">'+q.area+'</span></span>'
       + '<span class="selo '+estado+'">'+rotulo+'</span></div>'
       + '<div class="enunciado">'+escapar(q.question)+'</div>';
