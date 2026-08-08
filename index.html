@@ -262,6 +262,27 @@ body:not(.modo-app) .lateral{display:none}
   .painel-topo{padding:20px 18px;border-radius:14px}
 }
 
+/* termos */
+.doc{max-width:760px;margin:0 auto}
+.doc h3{font-size:16px;margin:26px 0 9px;letter-spacing:-.01em}
+.doc h3:first-of-type{margin-top:8px}
+.doc p{font-size:14.5px;color:var(--ink-soft);line-height:1.72;margin-bottom:11px}
+.doc ul{margin:0 0 13px 0;padding-left:20px}
+.doc li{font-size:14.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:6px}
+.doc strong{color:var(--ink);font-weight:700}
+.doc .versao{font-size:12.5px;color:var(--ink-soft);border-top:1px solid var(--rule);
+  padding-top:14px;margin-top:26px}
+.destaque-doc{background:#FDF3E0;border:1px solid #F2DCB4;border-radius:12px;
+  padding:15px 17px;margin:16px 0}
+.destaque-doc p{color:#7A4E08;margin:0;font-size:14px}
+
+.aceite{display:flex;gap:11px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--rule);border-radius:11px;padding:13px 15px;margin:14px 0 4px;cursor:pointer}
+.aceite input{margin-top:2px;accent-color:var(--signal);width:17px;height:17px;flex-shrink:0}
+.aceite span{font-size:13px;color:var(--ink-soft);line-height:1.55}
+.aceite a{color:var(--signal);font-weight:600;text-decoration:underline;cursor:pointer}
+.aceite.faltou{border-color:var(--errado);background:#FCEDEC}
+
 /* planos */
 .planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:6px}
 .plano{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:24px 22px;
@@ -654,7 +675,117 @@ body:not(.modo-app) .lateral{display:none}
   </div>
 
   <p class="rodape">Questões das provas objetivas do Revalida, publicadas pelo INEP.
-    Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.</p>
+    Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.<br>
+    <button onclick="abrirTermos(event)" style="background:none;border:none;
+      color:var(--signal);text-decoration:underline;font-size:12px;padding:4px">Termos de uso</button></p>
+</section>
+
+<!-- ===== TERMOS ===== -->
+<section id="tela-termos" class="screen">
+  <div class="hero" style="padding:34px 26px 30px">
+    <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
+    <span class="tarja">Documento</span>
+    <h1 class="manchete" style="font-size:clamp(24px,4vw,34px)">Termos de uso</h1>
+    <p class="sub-capa">Leia antes de criar sua conta.</p>
+  </div>
+
+  <div class="card doc" style="margin-top:16px">
+
+    <h3>1. O que é este serviço</h3>
+    <p>O Revalidei é uma <strong>ferramenta de treino</strong>. Ele reúne questões das provas
+    objetivas do Revalida já aplicadas e publicadas pelo INEP, organizadas para você responder,
+    conferir o gabarito e acompanhar seu desempenho.</p>
+    <p>Não é curso, não é aula, não é material didático, não é consultoria e não substitui
+    estudo por fontes primárias, diretrizes clínicas ou orientação de professores.</p>
+
+    <h3>2. Não há promessa de aprovação</h3>
+    <p>Nenhum resultado é prometido ou garantido. Aprovação em qualquer exame depende de
+    fatores fora do alcance desta plataforma — sua preparação, o conteúdo cobrado na edição,
+    a concorrência, a nota de corte e as regras do edital vigente.</p>
+    <p>Os percentuais e estatísticas mostrados aqui refletem apenas o seu desempenho
+    <strong>dentro desta ferramenta</strong>. Não são simulação de nota, não são previsão
+    de resultado e não têm relação com o cálculo oficial da banca.</p>
+
+    <h3>3. Conteúdo pode estar desatualizado</h3>
+    <div class="destaque-doc">
+      <p><strong>Confira as fontes antes de aplicar qualquer conduta.</strong> Os gabaritos
+      refletem o que a banca considerou correto na data daquela prova. Diretrizes clínicas,
+      protocolos do Ministério da Saúde, bulas e normas mudam. Uma resposta correta em 2023
+      pode não ser a conduta recomendada hoje.</p>
+    </div>
+    <p>Você é responsável por verificar a informação em fontes atualizadas antes de usá-la
+    em estudo aprofundado ou na prática clínica. Esta plataforma não presta orientação médica
+    e não deve ser usada como referência para decisão assistencial.</p>
+
+    <h3>4. Limites conhecidos do conteúdo</h3>
+    <ul>
+      <li>Questões <strong>anuladas</strong> pela banca não estão incluídas, por não terem
+      resposta correta oficial.</li>
+      <li>A separação por área é feita por <strong>classificação automática</strong> e acerta
+      cerca de nove em cada dez questões. Use como orientação, não como medida exata.</li>
+      <li>Tabelas de exames aparecem em texto corrido, sem a formatação original.</li>
+      <li>Enunciados e gabaritos foram extraídos dos arquivos oficiais por processo automatizado
+      e conferidos, mas <strong>erros podem existir</strong>. Em caso de divergência, vale sempre
+      o caderno e o gabarito publicados pelo INEP.</li>
+    </ul>
+    <p>Encontrou um erro? Avise pelo email de contato. A correção é feita assim que verificada.</p>
+
+    <h3>5. Sem vínculo com o INEP</h3>
+    <p>Este é um projeto independente. Não há qualquer vínculo, parceria, patrocínio ou
+    endosso do INEP, do Ministério da Educação ou de qualquer órgão público. As provas
+    utilizadas são documentos de divulgação oficial.</p>
+
+    <h3>6. Sua conta</h3>
+    <ul>
+      <li>O acesso é <strong>individual e intransferível</strong>.</li>
+      <li>Você é responsável por guardar sua senha.</li>
+      <li>É proibido copiar, extrair em massa, redistribuir ou revender o conteúdo da plataforma.</li>
+      <li>O compartilhamento de acesso pode resultar em bloqueio sem devolução do valor pago.</li>
+    </ul>
+
+    <h3>7. Pagamento, cancelamento e devolução</h3>
+    <ul>
+      <li>O acesso vale pelo período contratado e <strong>não renova automaticamente</strong>.</li>
+      <li>Não há cobrança recorrente nem armazenamento de dados de cartão.</li>
+      <li>A liberação é manual e pode levar algumas horas após o envio do comprovante.</li>
+      <li>Você pode desistir em até <strong>7 dias</strong> a contar da liberação do acesso e
+      receber o valor de volta, conforme o artigo 49 do Código de Defesa do Consumidor.
+      Basta pedir pelo email de contato.</li>
+    </ul>
+
+    <h3>8. Disponibilidade</h3>
+    <p>O serviço depende de provedores de terceiros e pode ficar indisponível por manutenção
+    ou falha técnica. Interrupções pontuais não geram direito a devolução; interrupção
+    prolongada é compensada com extensão equivalente do prazo de acesso.</p>
+
+    <h3>9. Seus dados</h3>
+    <p>São armazenados apenas o seu email e o seu histórico de respostas e desempenho,
+    com a única finalidade de fazer a plataforma funcionar. Nada é vendido nem compartilhado
+    com terceiros para fins comerciais. Você pode pedir a exclusão da sua conta e dos seus
+    dados a qualquer momento pelo email de contato, conforme a Lei Geral de Proteção de Dados.</p>
+
+    <h3>10. Limite de responsabilidade</h3>
+    <p>Na máxima extensão permitida pela legislação brasileira, a responsabilidade por
+    eventual falha do serviço fica limitada ao valor efetivamente pago pelo período em curso.</p>
+    <p>Não há responsabilidade por reprovação em exame, por decisão tomada com base em
+    conteúdo desatualizado sem a devida verificação, nem por mudança de normas, editais
+    ou diretrizes ocorrida após a publicação das provas aqui reunidas.</p>
+
+    <h3>11. Alterações</h3>
+    <p>Estes termos podem ser atualizados. Mudanças relevantes são comunicadas por email
+    e a versão vigente fica sempre disponível nesta página.</p>
+
+    <h3>12. Foro</h3>
+    <p>Aplica-se a legislação brasileira. Fica eleito o foro do domicílio do consumidor
+    para dirimir eventuais controvérsias.</p>
+
+    <p class="versao">Versão 1.0 — vigente desde agosto de 2026.<br>
+    Contato: <span id="contato-termos"></span></p>
+  </div>
+
+  <div class="acoes" style="justify-content:center;margin-top:18px">
+    <button class="b-neutro" onclick="voltarDosTermos()">← Voltar</button>
+  </div>
 </section>
 
 <!-- ===== PLANOS ===== -->
@@ -737,7 +868,9 @@ body:not(.modo-app) .lateral{display:none}
     <button class="b-signal" onclick="irPara('tela-login')">Já tenho acesso</button>
   </div>
 
-  <p class="rodape">Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.</p>
+  <p class="rodape">Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.<br>
+    <button onclick="abrirTermos(event)" style="background:none;border:none;
+      color:var(--signal);text-decoration:underline;font-size:12px;padding:4px">Termos de uso</button></p>
 </section>
 
 <!-- ===== ADMINISTRAÇÃO ===== -->
@@ -831,6 +964,12 @@ body:not(.modo-app) .lateral{display:none}
         <label for="senha">Senha</label>
         <input type="password" id="senha" autocomplete="current-password" placeholder="mínimo 6 caracteres">
       </div>
+      <label class="aceite" id="caixa-aceite" style="display:none">
+        <input type="checkbox" id="chk-aceite">
+        <span>Li e aceito os <a onclick="abrirTermos(event)">termos de uso</a>.
+          Entendo que a plataforma é ferramenta de treino, que não há promessa de aprovação
+          e que devo conferir as fontes antes de aplicar qualquer conduta.</span>
+      </label>
       <button class="b-signal" id="btn-entrar" style="width:100%" onclick="enviarLogin()">Entrar</button>
     </div>
 
@@ -1190,8 +1329,25 @@ function recado(txt, tipo){
   if(!txt) r.className = 'recado';
 }
 
+let telaAntesDosTermos = 'tela-capa';
+const VERSAO_TERMOS = '1.0';
+
+function abrirTermos(ev){
+  if(ev) ev.preventDefault();
+  const atual = [...document.querySelectorAll('.screen')].find(x => x.classList.contains('on'));
+  if(atual && atual.id !== 'tela-termos') telaAntesDosTermos = atual.id;
+  document.getElementById('contato-termos').textContent = CONTATO;
+  irPara('tela-termos');
+}
+
+function voltarDosTermos(){ irPara(telaAntesDosTermos); }
+
 function alternarCadastro(){
   cadastrando = !cadastrando;
+  const cx = document.getElementById('caixa-aceite');
+  cx.style.display = cadastrando ? '' : 'none';
+  cx.classList.remove('faltou');
+  document.getElementById('chk-aceite').checked = false;
   document.getElementById('btn-entrar').textContent = cadastrando ? 'Criar conta' : 'Entrar';
   document.getElementById('txt-troca').textContent = cadastrando ? 'Já tem conta?' : 'Ainda não tem conta?';
   document.getElementById('btn-troca').textContent = cadastrando ? 'Entrar' : 'Criar conta';
@@ -1205,11 +1361,20 @@ async function enviarLogin(){
   if(!email || !senha) return recado('Preencha email e senha.', 'erro');
   if(senha.length < 6) return recado('A senha precisa de pelo menos 6 caracteres.', 'erro');
 
+  if(cadastrando && !document.getElementById('chk-aceite').checked){
+    document.getElementById('caixa-aceite').classList.add('faltou');
+    return recado('Para criar a conta é preciso aceitar os termos de uso.', 'erro');
+  }
+  document.getElementById('caixa-aceite').classList.remove('faltou');
+
   const btn = document.getElementById('btn-entrar');
   btn.disabled = true; btn.textContent = 'Aguarde…';
   try{
     const r = cadastrando
-      ? await sb.auth.signUp({ email, password: senha })
+      ? await sb.auth.signUp({ email, password: senha, options: { data: {
+          termos_versao: VERSAO_TERMOS,
+          termos_aceitos_em: new Date().toISOString()
+        }}})
       : await sb.auth.signInWithPassword({ email, password: senha });
     if(r.error) throw r.error;
     if(cadastrando && !r.data.session){
@@ -1486,7 +1651,7 @@ function irPara(id){
   const app = TELAS_APP.includes(id);
   document.body.classList.toggle('modo-app', app);
   const geral = document.getElementById('rodape-geral');
-  if(geral) geral.style.display = (id === 'tela-capa' || app) ? 'none' : '';
+  if(geral) geral.style.display = (id === 'tela-capa' || id === 'tela-termos' || app) ? 'none' : '';
   document.querySelectorAll('#nav-app button').forEach(b =>
     b.classList.toggle('ativo', b.dataset.tela === id));
   window.scrollTo({top:0});
