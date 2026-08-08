@@ -1669,6 +1669,20 @@ async function sair(){
 
 /* ================= ADMINISTRAÇÃO ================= */
 let ehAdmin = false, listaAcessos = [];
+let statusAcesso = null;   // { ate, origem, respondidas, limite }
+
+async function lerStatus(){
+  if(!sb || !usuario) return null;
+  try{ const { data } = await sb.rpc('status_acesso'); statusAcesso = data; }
+  catch(e){ statusAcesso = null; }
+  return statusAcesso;
+}
+
+/* Quantas questões ainda restam. Infinito para quem paga. */
+function restamNoTeste(){
+  if(!statusAcesso || statusAcesso.origem !== 'teste') return Infinity;
+  return Math.max(0, Number(statusAcesso.limite) - Number(statusAcesso.respondidas));
+}
 
 const soData = d => new Date(d + 'T12:00');
 const diasAte = d => Math.round((soData(d) - new Date().setHours(12,0,0,0)) / 86400000);
@@ -1696,6 +1710,7 @@ async function abrirAdmin(){
   await carregarPedidos();
   await carregarUsuarios();
   await carregarAcessos();
+  listarAcessos();
 }
 
 let listaPedidos = [], listaUsuarios = [];
@@ -1874,7 +1889,7 @@ async function descartarPedido(btn){
 async function carregarAcessos(avisar){
   try{
     const { data, error } = await sb.from('acessos')
-      .select('email,nome,liberado_ate,observacao,admin');
+      .select('email,nome,liberado_ate,observacao,admin,origem');
     if(error) throw error;
     listaAcessos = data || [];
     listarAcessos();
@@ -1917,9 +1932,20 @@ function listarAcessos(){
   alvo.innerHTML = lista.map(a => {
     const [cls, txt] = situacao(a);
     const em = escapar(a.email);
+    const u = listaUsuarios.find(x => (x.email||'').toLowerCase() === (a.email||'').toLowerCase());
+    const eTeste = (a.origem || 'manual') === 'teste';
+
+    let extra = '';
+    if(!a.admin){
+      extra = '<span class="etiqueta ' + (eTeste ? 'perto' : 'ativo') + '">'
+            + (eTeste ? 'Teste' : 'Pagante') + '</span>';
+      if(u) extra += '<span class="etiqueta novo">' + (u.respondidas || 0) + ' questões</span>';
+    }
+
     return '<div class="linha-acesso">'
-      + '<div class="quem"><b>' + escapar(a.nome || '—') + '</b><span>' + em
+      + '<div class="quem"><b>' + escapar(a.nome || (u && u.nome) || '—') + '</b><span>' + em
       + (a.observacao ? ' · ' + escapar(a.observacao) : '') + '</span></div>'
+      + extra
       + '<span class="etiqueta ' + cls + '">' + txt + '</span>'
       + (a.admin ? '' :
           '<div class="acoes-linha">'
@@ -1927,6 +1953,8 @@ function listarAcessos(){
           + '<button class="b-neutro" data-em="' + em + '" onclick="renovar(this.dataset.em,365)">+1a</button>'
           + '<button class="b-neutro" data-em="' + em + '" onclick="editarAcesso(this.dataset.em)">Editar</button>'
           + '<button class="b-pular" data-em="' + em + '" onclick="bloquear(this.dataset.em)">Bloquear</button>'
+          + (u ? '<button class="b-excluir" data-id="' + u.usuario + '" data-em="' + em
+                 + '" onclick="excluirUsuario(this)">Excluir</button>' : '')
           + '</div>')
       + '</div>';
   }).join('');
@@ -2016,6 +2044,7 @@ async function entrarNoApp(){
     return telaSemAcesso();
   }
   await carregarDados();
+  await lerStatus();
   await verificarAdmin();
   montarAmostra();
   montarChips(); montarAreasChips(); atualizarConfig();
@@ -2181,24 +2210,24 @@ function pintarInicio(){
     ? usuario.email + '<br><button onclick="sair()">Sair</button>' : '';
 }
 
-function treinoRapido(){
+async function treinoRapido(){
   provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'todas';
   document.getElementById('qtd').value = 10;
-  atualizarConfig(); iniciar();
+  atualizarConfig(); await iniciar();
 }
-function treinoErradas(){
+async function treinoErradas(){
   if(!erradas.size) return irPara('tela-config');
   provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'erradas';
   atualizarConfig();
   document.getElementById('qtd').value = Math.min(20, poolDe().length);
-  iniciar();
+  await iniciar();
 }
-function treinoMarcadas(){
+async function treinoMarcadas(){
   if(!marcadas.size) return irPara('tela-config');
   provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'marcadas';
   atualizarConfig();
   document.getElementById('qtd').value = Math.min(20, poolDe().length);
-  iniciar();
+  await iniciar();
 }
 function setQtd(n){
   const c = document.getElementById('qtd');
@@ -2463,17 +2492,27 @@ function atualizarConfig(){
   if(rq) rq.textContent = (campo.value || 0) + ' questões';
   const at = document.getElementById('acao-titulo');
   if(at) at.textContent = total ? campo.value + ' questões sorteadas' : 'Sem questões';
+  const restam = restamNoTeste();
+  if(restam !== Infinity && campo.value > restam) campo.value = restam || 1;
   const asb = document.getElementById('acao-sub');
-  if(asb) asb.textContent = total
+  if(asb && restam !== Infinity && restam > 0){
+    asb.textContent = 'Restam ' + restam + ' questões no seu teste grátis';
+  }
+  else if(asb) asb.textContent = total
     ? (provasSel.size === PROVAS.length ? 'Todas as provas' : provasSel.size + ' prova(s)')
       + ' · ' + (areasSel.size === AREAS.length ? 'todas as áreas' : areasSel.size + ' área(s)')
     : 'Ajuste os filtros acima';
 }
 
 /* ================= PROVA ================= */
-function iniciar(){
+async function iniciar(){
+  await lerStatus();
+  const restam = restamNoTeste();
+  if(restam <= 0) return telaSemAcesso();
+
   const pool = poolDe();
-  const n = Math.min(Math.max(1, +document.getElementById('qtd').value||1), pool.length);
+  let n = Math.min(Math.max(1, +document.getElementById('qtd').value||1), pool.length);
+  if(n > restam) n = restam;
   prova = [...pool].sort(()=>Math.random()-.5).slice(0,n);
   atual = 0; respostas = {}; puladas = new Set(); segundos = 0;
   irPara('tela-prova'); mostrar();
@@ -2625,6 +2664,8 @@ function finalizar(){
   const reg = { data:Date.now(), total, certas, pct, segundos,
                 provas:[...provasSel], modo, porArea };
   salvarSessao(reg, novosErros, resolvidos);
+  if(statusAcesso && statusAcesso.origem === 'teste')
+    statusAcesso.respondidas = Number(statusAcesso.respondidas) + total;
 
   const convite = document.getElementById('convite-conta');
   if(degustacao && !usuario && sb){
