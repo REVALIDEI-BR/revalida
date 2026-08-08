@@ -131,6 +131,137 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
   .chamada-final{padding:32px 20px}
 }
 
+
+/* ============ SHELL DE APLICAÇÃO ============ */
+body.modo-app{background:var(--paper)}
+body.modo-app .wrap{max-width:none;padding:0;display:flex;min-height:100vh}
+
+.lateral{
+  width:246px;flex:0 0 246px;background:linear-gradient(178deg,#0E2A57 0%,#123B72 60%,#14477F 100%);
+  color:#fff;padding:22px 16px;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+body:not(.modo-app) .lateral{display:none}
+.lateral::after{content:"";position:absolute;inset:auto -40% -18% -40%;height:280px;
+  background:radial-gradient(circle,rgba(245,183,64,.16),transparent 62%);pointer-events:none}
+.lateral-marca{display:flex;align-items:center;gap:10px;padding:4px 8px 22px;position:relative}
+.lateral-marca .marca-sinal{width:32px;height:32px;flex:0 0 32px}
+.lateral-marca b{font-size:16.5px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.lateral-marca small{display:block;font-size:8.5px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px}
+
+.nav{display:flex;flex-direction:column;gap:3px;position:relative}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  background:none;border:none;color:rgba(255,255,255,.74);padding:11px 12px;border-radius:10px;
+  font-size:14px;font-weight:600}
+.nav button:hover{background:rgba(255,255,255,.09);color:#fff}
+.nav button.ativo{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 var(--ambar-claro)}
+.nav svg{width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.nav-titulo{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.42);padding:18px 12px 7px}
+
+.lateral-fogo{margin-top:auto;position:relative;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:13px 14px}
+.lateral-fogo .n{font-size:22px;font-weight:800;color:var(--ambar-claro);line-height:1}
+.lateral-fogo .t{font-size:11.5px;color:rgba(255,255,255,.7);margin-top:3px;line-height:1.4}
+.lateral-user{position:relative;margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.55);
+  word-break:break-all;padding:0 4px}
+.lateral-user button{background:none;border:none;color:rgba(255,255,255,.8);
+  text-decoration:underline;font-size:11.5px;padding:3px 0}
+
+.miolo{flex:1;min-width:0;display:flex;flex-direction:column}
+.faixa-topo{background:var(--surface);border-bottom:1px solid var(--rule);
+  padding:16px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  position:sticky;top:0;z-index:30;flex-wrap:wrap}
+.faixa-topo h1{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.faixa-topo p{font-size:13px;color:var(--ink-soft);margin-top:1px}
+.conteudo{padding:26px 30px 60px;max-width:1180px;width:100%}
+
+/* cabeçalho decorado das telas internas */
+.painel-topo{background:linear-gradient(120deg,#0E2A57,#1A4E96 65%,#1D6FD0);
+  border-radius:18px;padding:26px 28px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
+.painel-topo .rabiscos{opacity:.13}
+.painel-topo h2{font-size:clamp(20px,2.6vw,27px);letter-spacing:-.025em;position:relative}
+.painel-topo p{color:rgba(255,255,255,.75);font-size:14.5px;margin-top:6px;position:relative;max-width:56ch}
+.painel-topo .eyebrow{color:var(--ambar-claro);position:relative}
+.painel-topo .eyebrow::before{background:var(--ambar-claro)}
+
+/* grade de cartões */
+.grade-cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+@media(max-width:560px){.grade-cartoes{grid-template-columns:1fr 1fr;gap:10px}
+.cartao-num{flex-direction:column;align-items:flex-start;gap:9px;padding:15px}
+.cartao-num b{font-size:21px}}
+.cartao-num{background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:18px 20px;display:flex;align-items:center;gap:14px;transition:.18s}
+.cartao-num:hover{border-color:var(--signal);transform:translateY(-2px);box-shadow:var(--sombra)}
+.cartao-icone{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center}
+.cartao-icone svg{width:19px;height:19px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ic-azul{background:#EAF2FC}   .ic-azul svg{stroke:var(--signal)}
+.ic-ambar{background:#FDF3E0}  .ic-ambar svg{stroke:var(--ambar)}
+.ic-verde{background:#E7F5EE}  .ic-verde svg{stroke:var(--certo)}
+.ic-roxo{background:#EFEAFB}   .ic-roxo svg{stroke:var(--marca)}
+.cartao-num b{display:block;font-size:24px;font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.cartao-num span{font-size:11.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.04em}
+
+.duas-colunas{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:18px;align-items:start}
+@media(max-width:900px){ .duas-colunas{grid-template-columns:1fr} }
+
+.atalho{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:13px;padding:15px 17px;width:100%;text-align:left;margin-bottom:9px;transition:.16s}
+.atalho:hover{border-color:var(--signal);transform:translateX(3px)}
+.atalho b{display:block;font-size:14.5px;margin-bottom:2px}
+.atalho span{font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+.atalho .seta{margin-left:auto;color:var(--ink-soft);font-size:17px}
+
+/* acordeão de filtros */
+.bloco-filtro{background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  margin-bottom:11px;overflow:hidden}
+.bloco-filtro summary{cursor:pointer;list-style:none;padding:16px 19px;display:flex;
+  align-items:center;gap:14px}
+.bloco-filtro summary::-webkit-details-marker{display:none}
+.bloco-filtro summary::after{content:"⌄";margin-left:auto;font-size:19px;color:var(--ink-soft);
+  transition:.2s;line-height:1}
+.bloco-filtro[open] summary::after{transform:rotate(180deg)}
+.bloco-filtro[open]{border-color:var(--signal);box-shadow:0 0 0 3px rgba(29,111,208,.07)}
+.filtro-n{width:29px;height:29px;flex:0 0 29px;border-radius:9px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800}
+.bloco-filtro[open] .filtro-n{background:var(--signal)}
+.filtro-txt b{display:block;font-size:14.5px}
+.filtro-txt span{font-size:12.5px;color:var(--ink-soft)}
+.filtro-resumo{font-size:12.5px;font-weight:700;color:var(--signal);background:#EAF2FC;
+  padding:5px 11px;border-radius:99px;white-space:nowrap}
+.filtro-corpo{padding:0 19px 19px}
+
+.barra-acao{position:sticky;bottom:0;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);border:1px solid var(--rule);border-radius:14px;
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  gap:14px;margin-top:16px;flex-wrap:wrap;box-shadow:0 -4px 18px rgba(16,36,58,.06)}
+.barra-acao .info b{font-size:15px;display:block}
+.barra-acao .info span{font-size:12.5px;color:var(--ink-soft)}
+
+/* prova centralizada dentro do miolo */
+.leitura{max-width:820px;margin:0 auto;width:100%}
+
+@media(max-width:820px){
+  body.modo-app .wrap{flex-direction:column}
+  .lateral{width:auto;flex:none;height:auto;position:fixed;bottom:0;left:0;right:0;top:auto;
+    z-index:60;flex-direction:row;padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+    gap:4px;border-radius:0;box-shadow:0 -3px 16px rgba(8,24,48,.22)}
+  body.modo-app .miolo{padding-bottom:74px}
+  .lateral-marca,.lateral-fogo,.lateral-user,.nav-titulo{display:none}
+  .nav{flex-direction:row;width:100%;justify-content:space-around;gap:2px}
+  .nav button{flex-direction:column;gap:4px;font-size:10px;padding:7px 4px;text-align:center;
+    letter-spacing:.02em}
+  .nav button.ativo{box-shadow:inset 0 3px 0 var(--ambar-claro)}
+  .nav svg{width:19px;height:19px}
+  .miolo{order:1}
+  .faixa-topo{padding:14px 16px;position:static}
+  .conteudo{padding:16px 16px 30px}
+  .painel-topo{padding:20px 18px;border-radius:14px}
+}
+
 /* planos */
 .planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:6px}
 .plano{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:24px 22px;
@@ -365,6 +496,33 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 </head>
 <body>
 <div class="wrap">
+<aside class="lateral" id="lateral">
+  <div class="lateral-marca">
+    <div class="marca-sinal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--ambar-claro)" stroke-width="2.4"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2 12h4l2.5-7 4 14 2.5-7H22"/>
+      </svg>
+    </div>
+    <b>Revalidei<small>Banco de questões</small></b>
+  </div>
+
+  <nav class="nav" id="nav-app">
+    <button data-tela="tela-inicio" onclick="irPara('tela-inicio')">
+      <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Início</button>
+    <button data-tela="tela-config" onclick="irPara('tela-config')">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="17" cy="18" r="2.4"/></svg>Montar prova</button>
+    <button data-tela="tela-historico" onclick="abrirHistorico()">
+      <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Desempenho</button>
+    <button data-tela="tela-admin" id="nav-admin" style="display:none" onclick="abrirAdmin()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0114 0"/></svg>Administração</button>
+  </nav>
+
+  <div class="lateral-fogo" id="lateral-fogo"></div>
+  <div class="lateral-user" id="lateral-user"></div>
+</aside>
+
+<div class="miolo">
 
 <!-- ===== CAPA ===== -->
 <section id="tela-capa" class="screen on">
@@ -584,6 +742,8 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 <!-- ===== ADMINISTRAÇÃO ===== -->
 <section id="tela-admin" class="screen">
+  <div class="faixa-topo"><div><h1>Administração</h1><p>Liberar e gerenciar acessos</p></div></div>
+  <div class="conteudo"><div>
   <div class="card">
     <p class="eyebrow">Administração</p>
     <h2>Liberar acesso</h2>
@@ -630,6 +790,7 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
     <button class="b-neutro" onclick="irPara('tela-inicio')">← Voltar</button>
     <button class="b-neutro" onclick="carregarAcessos(true)">Atualizar lista</button>
   </div>
+</div></div>
 </section>
 
 <!-- ===== SEM ACESSO ===== -->
@@ -685,60 +846,125 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 <!-- ===== INÍCIO ===== -->
 <section id="tela-inicio" class="screen">
-  <div class="usuario" id="barra-usuario"></div>
-  <div id="faixa-ofensiva"></div>
-  <div class="card">
-    <p class="eyebrow">Banco</p>
-    <h1 id="titulo-banco">Carregando…</h1>
-    <p class="lead" id="resumo-banco"></p>
-    <div class="acoes">
-      <button class="b-primario" onclick="irPara('tela-config')">Montar prova</button>
-      <button class="b-neutro" onclick="abrirHistorico()">Meu desempenho</button>
-      <button class="b-neutro" id="btn-admin" style="display:none" onclick="abrirAdmin()">Administração</button>
-    </div>
+  <div class="faixa-topo">
+    <div><h1>Início</h1><p id="saudacao"></p></div>
+    <button class="b-signal" onclick="irPara('tela-config')">Montar prova</button>
   </div>
-  <div class="card" id="card-areas-inicio" style="display:none">
-    <p class="eyebrow">Aproveitamento por área</p>
-    <div id="areas-inicio" style="margin-top:14px"></div>
+  <div class="conteudo">
+    <div class="painel-topo">
+      <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
+      <p class="eyebrow">Seu treino</p>
+      <h2 id="painel-titulo">Pronta para começar?</h2>
+      <p id="painel-sub"></p>
+      <div class="acoes" style="position:relative">
+        <button class="b-destaque" onclick="treinoRapido()">Treino rápido de 10</button>
+        <button class="b-vidro" onclick="irPara('tela-config')">Escolher filtros</button>
+      </div>
+    </div>
+
+    <div class="grade-cartoes" id="cartoes-inicio"></div>
+
+    <div class="duas-colunas">
+      <div class="card">
+        <p class="eyebrow">Aproveitamento por área</p>
+        <div id="areas-inicio" style="margin-top:16px"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <p class="eyebrow">Atalhos</p>
+          <div style="margin-top:14px">
+            <button class="atalho" onclick="treinoErradas()">
+              <span class="cartao-icone ic-ambar"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></span>
+              <span><b>Refazer o que errei</b><span id="atalho-erradas"></span></span>
+              <span class="seta">›</span></button>
+            <button class="atalho" onclick="treinoMarcadas()">
+              <span class="cartao-icone ic-roxo"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg></span>
+              <span><b>Só as marcadas</b><span id="atalho-marcadas"></span></span>
+              <span class="seta">›</span></button>
+            <button class="atalho" onclick="abrirHistorico()" style="margin-bottom:0">
+              <span class="cartao-icone ic-azul"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+              <span><b>Meu desempenho</b><span>Evolução e histórico completo</span></span>
+              <span class="seta">›</span></button>
+          </div>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Provas disponíveis</p>
+          <div class="chips" id="chips-inicio" style="margin-top:14px"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ===== CONFIGURAÇÃO ===== -->
 <section id="tela-config" class="screen">
-  <div class="card">
-    <p class="eyebrow">Passo 1</p>
-    <h2>Provas</h2>
-    <div class="chips" id="chips-provas"></div>
-    <p class="dica"><button class="chip" style="padding:5px 11px;font-size:12px" onclick="marcarTodasProvas()">Selecionar todas</button></p>
+  <div class="faixa-topo">
+    <div><h1>Montar prova</h1><p>Escolha o recorte e comece</p></div>
+    <button class="b-neutro" onclick="irPara('tela-inicio')">← Início</button>
+  </div>
+  <div class="conteudo">
+    <details class="bloco-filtro" open>
+      <summary>
+        <span class="filtro-n">1</span>
+        <span class="filtro-txt"><b>Provas</b><span>De quais edições sortear</span></span>
+        <span class="filtro-resumo" id="res-provas"></span>
+      </summary>
+      <div class="filtro-corpo">
+        <div class="chips" id="chips-provas"></div>
+        <p class="dica"><button class="chip" style="padding:5px 11px;font-size:12px"
+          onclick="marcarTodasProvas()">Selecionar todas</button></p>
+      </div>
+    </details>
 
-    <div class="campo">
-      <p class="eyebrow">Passo 2</p>
-      <h2 style="margin:4px 0 8px">Áreas</h2>
-      <div class="chips" id="chips-areas"></div>
-      <p class="dica">Classificação automática por palavras-chave — cerca de 1 em cada 10 questões pode cair na área vizinha.</p>
-    </div>
+    <details class="bloco-filtro">
+      <summary>
+        <span class="filtro-n">2</span>
+        <span class="filtro-txt"><b>Áreas</b><span>Onde você quer apertar o passo</span></span>
+        <span class="filtro-resumo" id="res-areas"></span>
+      </summary>
+      <div class="filtro-corpo">
+        <div class="chips" id="chips-areas"></div>
+        <p class="dica">Classificação automática — cerca de 1 em cada 10 questões pode cair na área vizinha.</p>
+      </div>
+    </details>
 
-    <div class="campo">
-      <p class="eyebrow">Passo 3</p>
-      <h2 style="margin:4px 0 8px">Modo</h2>
-      <div class="modos" id="modos"></div>
-    </div>
+    <details class="bloco-filtro">
+      <summary>
+        <span class="filtro-n">3</span>
+        <span class="filtro-txt"><b>Modo</b><span>Todas, só erros ou só marcadas</span></span>
+        <span class="filtro-resumo" id="res-modo"></span>
+      </summary>
+      <div class="filtro-corpo"><div class="modos" id="modos"></div></div>
+    </details>
 
-    <div class="campo">
-      <label for="qtd">Quantas questões</label>
-      <input type="number" id="qtd" value="20" min="1">
-      <p class="dica" id="dica-qtd"></p>
-    </div>
+    <details class="bloco-filtro">
+      <summary>
+        <span class="filtro-n">4</span>
+        <span class="filtro-txt"><b>Quantidade</b><span>Quantas questões nesta rodada</span></span>
+        <span class="filtro-resumo" id="res-qtd"></span>
+      </summary>
+      <div class="filtro-corpo">
+        <div class="chips" style="margin-bottom:12px">
+          <button class="chip" onclick="setQtd(10)">10</button>
+          <button class="chip" onclick="setQtd(20)">20</button>
+          <button class="chip" onclick="setQtd(50)">50</button>
+          <button class="chip" onclick="setQtd(100)">100</button>
+        </div>
+        <input type="number" id="qtd" value="20" min="1" oninput="atualizarConfig()">
+        <p class="dica" id="dica-qtd"></p>
+      </div>
+    </details>
 
-    <div class="acoes">
-      <button class="b-signal" id="btn-comecar" onclick="iniciar()">Começar</button>
-      <button class="b-neutro" onclick="irPara('tela-inicio')">Voltar</button>
+    <div class="barra-acao">
+      <div class="info"><b id="acao-titulo">Tudo pronto</b><span id="acao-sub"></span></div>
+      <button class="b-signal" id="btn-comecar" onclick="iniciar()" style="padding:13px 30px">Começar prova</button>
     </div>
   </div>
 </section>
 
 <!-- ===== PROVA ===== -->
 <section id="tela-prova" class="screen">
+  <div class="conteudo" style="padding-top:20px"><div class="leitura">
   <div class="topo">
     <div class="metricas">
       <div class="metrica"><b id="m-pos">1/20</b><span>Questão</span></div>
@@ -778,10 +1004,13 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
       <button class="b-primario" id="btn-avancar" onclick="avancar()" disabled>Próxima →</button>
     </div>
   </div>
+</div></div>
 </section>
 
 <!-- ===== PULADAS ===== -->
 <section id="tela-puladas" class="screen">
+  <div class="faixa-topo"><div><h1>Questões puladas</h1><p>Volte nelas antes de finalizar</p></div></div>
+  <div class="conteudo"><div class="leitura">
   <div class="card">
     <p class="eyebrow">Antes de finalizar</p>
     <h2>Questões puladas</h2>
@@ -792,10 +1021,13 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
       <button class="b-neutro" onclick="finalizar()">Finalizar assim mesmo</button>
     </div>
   </div>
+</div></div>
 </section>
 
 <!-- ===== RESULTADO ===== -->
 <section id="tela-resultado" class="screen">
+  <div class="faixa-topo"><div><h1>Resultado</h1><p>Como você foi nesta rodada</p></div></div>
+  <div class="conteudo"><div class="leitura">
   <div class="card">
     <p class="eyebrow">Resultado</p>
     <h2 id="titulo-resultado"></h2>
@@ -828,10 +1060,13 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
     <button class="b-neutro" onclick="irPara('tela-config')">Nova prova</button>
     <button class="b-neutro" onclick="irPara('tela-inicio')">Início</button>
   </div>
+</div></div>
 </section>
 
 <!-- ===== GABARITO ===== -->
 <section id="tela-gabarito" class="screen">
+  <div class="faixa-topo"><div><h1>Gabarito comentado</h1><p>Questão por questão</p></div></div>
+  <div class="conteudo"><div class="leitura">
   <div class="card" style="margin-bottom:14px">
     <p class="eyebrow">Revisão</p>
     <h2>Gabarito comentado</h2>
@@ -842,10 +1077,13 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
     <button class="b-neutro" onclick="irPara('tela-resultado')">← Resultado</button>
     <button class="b-neutro" onclick="irPara('tela-config')">Nova prova</button>
   </div>
+</div></div>
 </section>
 
 <!-- ===== HISTÓRICO ===== -->
 <section id="tela-historico" class="screen">
+  <div class="faixa-topo"><div><h1>Meu desempenho</h1><p>Evolução ao longo do tempo</p></div></div>
+  <div class="conteudo"><div class="leitura">
   <div class="card">
     <p class="eyebrow">Desempenho</p>
     <h2>Meu histórico</h2>
@@ -860,8 +1098,10 @@ button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
     <button class="b-neutro" onclick="irPara('tela-inicio')">Voltar</button>
     <button class="b-neutro" id="btn-limpar-hist" onclick="limparHistorico()">Apagar histórico</button>
   </div>
+</div></div>
 </section>
 
+</div>
 <p class="rodape" id="rodape-geral">
   <span id="rodape-banco">Revalida 2023/1 a 2026/1</span> · gabaritos oficiais do INEP<br>
   <span id="rodape-modo"></span>
@@ -926,16 +1166,6 @@ function montarAmostra(){
   const pills = document.getElementById('pills-provas');
   if(pills) pills.innerHTML =
     PROVAS.map(p => '<span class="pill">' + p.replace('Revalida ','') + '</span>').join('');
-  const alvo = document.getElementById('amostra-questao');
-  if(!alvo) return;
-  const bons = BANCO.filter(q => !q.images && q.question.length > 380 && q.question.length < 700);
-  const q = bons[Math.floor(Math.random()*bons.length)] || BANCO[0];
-  alvo.innerHTML =
-    '<div class="cabecalho-q"><span class="origem">' + q.exam + ' \u00b7 Quest\u00e3o ' + q.number
-    + '<span class="etiqueta-area">' + q.area + '</span></span></div>'
-    + '<div class="enunciado" style="font-size:15.5px">' + escapar(q.question) + '</div>'
-    + q.options.map((o,i) => '<div class="mini-alt"><b>' + String.fromCharCode(65+i)
-        + '</b><span>' + escapar(semPrefixo(o)) + '</span></div>').join('');
 }
 
 function experimentar(){
@@ -1011,20 +1241,6 @@ async function sair(){
   irPara('tela-login');
 }
 
-/* ================= PLANOS ================= */
-const CONTATO = 'mai.iara95@gmail.com';
-
-function assinar(plano, valor){
-  const assunto = 'Assinatura Revalidei — plano ' + plano;
-  const corpo =
-      'Olá! Quero assinar o plano ' + plano + ' (R$ ' + valor + ').\n\n'
-    + 'Meu email para acesso: \n\n'
-    + 'Envio o comprovante do PIX em seguida.\n';
-  window.location.href = 'mailto:' + CONTATO
-    + '?subject=' + encodeURIComponent(assunto)
-    + '&body=' + encodeURIComponent(corpo);
-}
-
 /* ================= ADMINISTRAÇÃO ================= */
 let ehAdmin = false, listaAcessos = [];
 
@@ -1040,11 +1256,9 @@ function recadoAdmin(txt, tipo){
 async function verificarAdmin(){
   ehAdmin = false;
   if(!sb || !usuario) return;
-  try{
-    const { data } = await sb.rpc('sou_admin');
-    ehAdmin = data === true;
-  }catch(e){ ehAdmin = false; }
-  const b = document.getElementById('btn-admin');
+  try{ const { data } = await sb.rpc('sou_admin'); ehAdmin = data === true; }
+  catch(e){ ehAdmin = false; }
+  const b = document.getElementById('nav-admin');
   if(b) b.style.display = ehAdmin ? '' : 'none';
 }
 
@@ -1063,9 +1277,7 @@ async function carregarAcessos(avisar){
     listaAcessos = data || [];
     listarAcessos();
     if(avisar) recadoAdmin('Lista atualizada.', 'ok');
-  }catch(e){
-    recadoAdmin('Não foi possível carregar a lista: ' + (e.message || e), 'erro');
-  }
+  }catch(e){ recadoAdmin('Não foi possível carregar a lista: ' + (e.message || e), 'erro'); }
 }
 
 function situacao(a){
@@ -1079,28 +1291,28 @@ function situacao(a){
 function listarAcessos(){
   const busca = (document.getElementById('ad-busca').value || '').toLowerCase().trim();
   const alvo = document.getElementById('lista-acessos');
+  const comuns = listaAcessos.filter(a => !a.admin);
+  const ativos = comuns.filter(a => diasAte(a.liberado_ate) >= 0).length;
+  const vencidos = comuns.filter(a => diasAte(a.liberado_ate) < 0).length;
+  const perto = comuns.filter(a => diasAte(a.liberado_ate) >= 0 && diasAte(a.liberado_ate) <= 7).length;
 
-  const ativos = listaAcessos.filter(a => !a.admin && diasAte(a.liberado_ate) >= 0).length;
-  const vencidos = listaAcessos.filter(a => !a.admin && diasAte(a.liberado_ate) < 0).length;
-  const perto = listaAcessos.filter(a => !a.admin && diasAte(a.liberado_ate) >= 0
-                                      && diasAte(a.liberado_ate) <= 7).length;
   document.getElementById('resumo-admin').innerHTML =
       '<div class="bloco certo"><b>' + ativos + '</b><span>Ativos</span></div>'
     + '<div class="bloco"><b>' + perto + '</b><span>Vencem em 7d</span></div>'
     + '<div class="bloco errado"><b>' + vencidos + '</b><span>Vencidos</span></div>';
 
-  const filtrada = listaAcessos
+  const lista = listaAcessos
     .filter(a => !busca || (a.email + ' ' + (a.nome||'')).toLowerCase().includes(busca))
     .sort((x,y) => (x.admin?1:0) - (y.admin?1:0)
                 || diasAte(x.liberado_ate) - diasAte(y.liberado_ate));
 
-  if(!filtrada.length){
+  if(!lista.length){
     alvo.innerHTML = '<div class="vazio">' + (busca ? 'Ninguém com esse termo.'
       : 'Nenhum acesso cadastrado ainda.') + '</div>';
     return;
   }
 
-  alvo.innerHTML = filtrada.map(a => {
+  alvo.innerHTML = lista.map(a => {
     const [cls, txt] = situacao(a);
     const em = escapar(a.email);
     return '<div class="linha-acesso">'
@@ -1109,18 +1321,17 @@ function listarAcessos(){
       + '<span class="etiqueta ' + cls + '">' + txt + '</span>'
       + (a.admin ? '' :
           '<div class="acoes-linha">'
-          + '<button class="b-neutro" onclick="renovar(\'' + em + '\',30)">+30d</button>'
-          + '<button class="b-neutro" onclick="renovar(\'' + em + '\',365)">+1a</button>'
-          + '<button class="b-neutro" onclick="editarAcesso(\'' + em + '\')">Editar</button>'
-          + '<button class="b-pular" onclick="bloquear(\'' + em + '\')">Bloquear</button>'
+          + '<button class="b-neutro" data-em="' + em + '" onclick="renovar(this.dataset.em,30)">+30d</button>'
+          + '<button class="b-neutro" data-em="' + em + '" onclick="renovar(this.dataset.em,365)">+1a</button>'
+          + '<button class="b-neutro" data-em="' + em + '" onclick="editarAcesso(this.dataset.em)">Editar</button>'
+          + '<button class="b-pular" data-em="' + em + '" onclick="bloquear(this.dataset.em)">Bloquear</button>'
           + '</div>')
       + '</div>';
   }).join('');
 }
 
 function prazo(dias){
-  const d = new Date();
-  d.setDate(d.getDate() + dias);
+  const d = new Date(); d.setDate(d.getDate() + dias);
   document.getElementById('ad-ate').value = d.toISOString().slice(0,10);
 }
 
@@ -1144,10 +1355,8 @@ async function salvarAcesso(){
   const ate   = document.getElementById('ad-ate').value;
   const nome  = document.getElementById('ad-nome').value.trim();
   const obs   = document.getElementById('ad-obs').value.trim();
-
   if(!email || !email.includes('@')) return recadoAdmin('Informe um email válido.', 'erro');
   if(!ate) return recadoAdmin('Escolha até quando o acesso vale.', 'erro');
-
   try{
     const { error } = await sb.from('acessos')
       .upsert({ email, liberado_ate: ate, nome: nome || null, observacao: obs || null },
@@ -1155,15 +1364,9 @@ async function salvarAcesso(){
     if(error) throw error;
     recadoAdmin('Acesso de ' + email + ' liberado até '
       + soData(ate).toLocaleDateString('pt-BR') + '.', 'ok');
-    limparCampos();
+    limparForm();
     await carregarAcessos();
-  }catch(e){
-    recadoAdmin('Não foi possível salvar: ' + (e.message || e), 'erro');
-  }
-}
-
-function limparCampos(){
-  ['ad-email','ad-nome','ad-ate','ad-obs'].forEach(id => document.getElementById(id).value = '');
+  }catch(e){ recadoAdmin('Não foi possível salvar: ' + (e.message || e), 'erro'); }
 }
 
 async function renovar(email, dias){
@@ -1173,8 +1376,7 @@ async function renovar(email, dias){
   base.setDate(base.getDate() + dias);
   const nova = base.toISOString().slice(0,10);
   try{
-    const { error } = await sb.from('acessos')
-      .update({ liberado_ate: nova }).eq('email', email);
+    const { error } = await sb.from('acessos').update({ liberado_ate: nova }).eq('email', email);
     if(error) throw error;
     recadoAdmin(email + ' agora vale até ' + soData(nova).toLocaleDateString('pt-BR') + '.', 'ok');
     await carregarAcessos();
@@ -1215,7 +1417,7 @@ async function telaSemAcesso(){
     venceu ? 'Seu acesso venceu' : 'Acesso ainda não liberado';
   document.getElementById('texto-sem-acesso').textContent = venceu
     ? 'Seu acesso valeu até ' + new Date(ate + 'T12:00').toLocaleDateString('pt-BR')
-      + '. Fale com quem administra para renovar.'
+      + '. Escolha um plano para renovar.'
     : 'Este email ainda não tem assinatura ativa. Escolha um plano para começar.';
   document.getElementById('email-sem-acesso').textContent = usuario ? usuario.email : '';
   irPara('tela-sem-acesso');
@@ -1231,20 +1433,20 @@ function carregarLocal(){
 async function carregarDados(){
   if(!usuario){ carregarLocal(); return; }
   try{
-    const [s, m, e] = await Promise.all([
+    const [ses, mar, err] = await Promise.all([
       sb.from('sessoes').select('*').order('criado_em', {ascending:true}),
       sb.from('marcadas').select('questao'),
       sb.from('erradas').select('questao')
     ]);
-    historico = (s.data||[]).map(r => ({
+    historico = (ses.data||[]).map(r => ({
       data: new Date(r.criado_em).getTime(), total:r.total, certas:r.certas,
       pct:r.pct, segundos:r.segundos, provas:r.provas||[], modo:r.modo,
       porArea:r.por_area||{}
     }));
-    marcadas = new Set((m.data||[]).map(r => r.questao));
-    erradas  = new Set((e.data||[]).map(r => r.questao));
-  }catch(err){
-    console.warn('Falha ao carregar da nuvem, usando dados locais.', err);
+    marcadas = new Set((mar.data||[]).map(r => r.questao));
+    erradas  = new Set((err.data||[]).map(r => r.questao));
+  }catch(e){
+    console.warn('Falha ao carregar da nuvem, usando dados locais.', e);
     carregarLocal();
   }
 }
@@ -1275,31 +1477,119 @@ async function salvarSessao(reg, novosErros, resolvidos){
   }catch(e){ console.warn('Não foi possível sincronizar esta sessão.', e); }
 }
 
-/* ================= NAVEGAÇÃO ================= */
+const TELAS_APP = ['tela-inicio','tela-config','tela-prova','tela-puladas',
+                   'tela-resultado','tela-gabarito','tela-historico','tela-admin'];
+
 function irPara(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
+  const app = TELAS_APP.includes(id);
+  document.body.classList.toggle('modo-app', app);
   const geral = document.getElementById('rodape-geral');
-  if(geral) geral.style.display = (id === 'tela-capa') ? 'none' : '';
+  if(geral) geral.style.display = (id === 'tela-capa' || app) ? 'none' : '';
+  document.querySelectorAll('#nav-app button').forEach(b =>
+    b.classList.toggle('ativo', b.dataset.tela === id));
   window.scrollTo({top:0});
 }
 
+const ICONES_CARTAO = {
+  provas:'<path d="M4 5.5A2.5 2.5 0 016.5 3H12v18H6.5A2.5 2.5 0 014 18.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v18h5.5a2.5 2.5 0 002.5-2.5z"/>',
+  alvo:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+  grafico:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  fogo:'<path d="M12 22c4 0 7-2.7 7-6.5 0-4-3-6-4.5-9.5-.6 2.6-2 3.6-3.3 4.6C9.4 12 8 13.4 8 15.5 8 19.3 8 22 12 22z"/>'
+};
+const cartao = (cor, ic, valor, rot) =>
+  '<div class="cartao-num"><span class="cartao-icone ic-' + cor + '"><svg viewBox="0 0 24 24">'
+  + ICONES_CARTAO[ic] + '</svg></span><span><b>' + valor + '</b><span>' + rot + '</span></span></div>';
+
+function pintarInicio(){
+  const total = historico.length;
+  const media = total ? Math.round(historico.reduce((a,h)=>a+h.pct,0)/total) : 0;
+  const ofensiva = calcularOfensiva();
+  const resp = historico.reduce((a,h)=>a+h.total,0);
+
+  document.getElementById('cartoes-inicio').innerHTML =
+      cartao('azul','provas', total, total === 1 ? 'Prova feita' : 'Provas feitas')
+    + cartao('verde','alvo', media + '%', 'Média geral')
+    + cartao('roxo','grafico', resp, 'Questões respondidas')
+    + cartao('ambar','fogo', ofensiva, ofensiva === 1 ? 'Dia seguido' : 'Dias seguidos');
+
+  const hora = new Date().getHours();
+  document.getElementById('saudacao').textContent =
+    (hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite')
+    + (usuario ? ', ' + usuario.email.split('@')[0] : '');
+
+  document.getElementById('painel-titulo').textContent = total
+    ? (ofensiva > 0 ? ofensiva + (ofensiva===1?' dia seguido':' dias seguidos') + ' de treino'
+                    : 'Vamos retomar?')
+    : 'Pronta para começar?';
+  document.getElementById('painel-sub').textContent = total
+    ? 'Você já respondeu ' + resp + ' questões, com média de ' + media + '%.'
+    : 'Escolha as provas e as áreas, ou vá direto num treino rápido de 10 questões.';
+
+  document.getElementById('atalho-erradas').textContent =
+    erradas.size ? erradas.size + ' questões guardadas' : 'Nada guardado ainda';
+  document.getElementById('atalho-marcadas').textContent =
+    marcadas.size ? marcadas.size + ' marcadas com estrela' : 'Nenhuma marcada ainda';
+
+  document.getElementById('chips-inicio').innerHTML =
+    PROVAS.map(p => '<span class="chip">' + p.replace('Revalida ','') + '</span>').join('');
+
+  const acc = acumuladoPorArea();
+  if(Object.keys(acc).length) barrasArea(acc, 'areas-inicio');
+  else document.getElementById('areas-inicio').innerHTML =
+    '<p class="dica">Faça sua primeira prova para ver onde está mais forte e mais frágil.</p>';
+
+  const f = document.getElementById('lateral-fogo');
+  if(f) f.innerHTML = '<div class="n">' + (ofensiva > 0 ? '&#128293; ' + ofensiva : '&#127793;')
+    + '</div><div class="t">' + (ofensiva > 0 ? 'dias seguidos. Responda hoje para manter.'
+    : 'Comece hoje sua sequência.') + '</div>';
+  const u = document.getElementById('lateral-user');
+  if(u) u.innerHTML = usuario
+    ? usuario.email + '<br><button onclick="sair()">Sair</button>' : '';
+}
+
+function treinoRapido(){
+  provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'todas';
+  document.getElementById('qtd').value = 10;
+  atualizarConfig(); iniciar();
+}
+function treinoErradas(){
+  if(!erradas.size) return irPara('tela-config');
+  provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'erradas';
+  atualizarConfig();
+  document.getElementById('qtd').value = Math.min(20, poolDe().length);
+  iniciar();
+}
+function treinoMarcadas(){
+  if(!marcadas.size) return irPara('tela-config');
+  provasSel = new Set(PROVAS); areasSel = new Set(AREAS); modo = 'marcadas';
+  atualizarConfig();
+  document.getElementById('qtd').value = Math.min(20, poolDe().length);
+  iniciar();
+}
+function setQtd(n){
+  const c = document.getElementById('qtd');
+  c.value = Math.min(n, poolDe().length || n);
+  atualizarConfig();
+}
+
+/* ================= PLANOS ================= */
+const CONTATO = 'mai.iara95@gmail.com';
+
+function assinar(plano, valor){
+  const assunto = 'Assinatura Revalidei — plano ' + plano;
+  const corpo = 'Olá! Quero assinar o plano ' + plano + ' (R$ ' + valor + ').\n\n'
+    + 'Meu email para acesso: \n\nEnvio o comprovante do PIX em seguida.\n';
+  window.location.href = 'mailto:' + CONTATO
+    + '?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
+}
+
+
 function abrirInicio(){
   degustacao = false;
-  const b = document.getElementById('barra-usuario');
-  b.innerHTML = usuario
-    ? '<span>' + usuario.email + '</span><button onclick="sair()">Sair</button>'
-    : '<span>Sem conta — dados só neste aparelho</span>'
-      + (sb ? '<button onclick="sair()">Entrar</button>' : '');
-  document.getElementById('rodape-modo').textContent = usuario
-    ? 'Sincronizado na sua conta.'
-    : 'Modo local: histórico salvo apenas neste navegador.';
-  document.getElementById('titulo-banco').textContent = 'Banco de questões';
-  document.getElementById('resumo-banco').textContent =
-    PROVAS.length + ' provas · ' + AREAS.length + ' áreas · gabarito oficial e imagens.';
-  montarOfensiva();
-  montarAreasInicio();
   montarChips(); montarAreasChips(); atualizarConfig();
+  pintarInicio();
   irPara('tela-inicio');
 }
 
@@ -1316,22 +1606,6 @@ function calcularOfensiva(){
     if(dias[i-1] - dias[i] === umDia) n++; else break;
   }
   return n;
-}
-
-function montarOfensiva(){
-  const n = calcularOfensiva();
-  const dias = new Set(historico.map(h => soDia(h.data)));
-  const rot = ['D','S','T','Q','Q','S','S'];
-  let semana = '';
-  for(let i=6; i>=0; i--){
-    const d = soDia(Date.now() - i*86400000);
-    semana += '<div class="dia'+(dias.has(d)?' feito':'')+'">'+rot[new Date(d).getDay()]+'</div>';
-  }
-  document.getElementById('faixa-ofensiva').innerHTML =
-    '<div class="faixa-ofensiva"><div class="chama">'+(n>0?'🔥':'🌱')+'</div>'
-    + '<div class="ofensiva-txt"><b>'+(n>0 ? n+(n===1?' dia seguido':' dias seguidos') : 'Comece hoje')+'</b>'
-    + '<span>'+(n>0 ? 'Responda hoje para não perder a sequência.' : 'Uma prova por dia mantém a ofensiva acesa.')+'</span></div>'
-    + '<div class="semana">'+semana+'</div></div>';
 }
 
 /* ================= ESTATÍSTICA POR ÁREA ================= */
@@ -1360,13 +1634,6 @@ function barrasArea(dados, alvo){
       + '<div class="area-barra"><i class="'+cls+'" style="width:'+pct+'%"></i></div></div>';
   }).join('');
   return true;
-}
-
-function montarAreasInicio(){
-  const acc = acumuladoPorArea();
-  const tem = Object.keys(acc).length > 0;
-  document.getElementById('card-areas-inicio').style.display = tem ? '' : 'none';
-  if(tem) barrasArea(acc, 'areas-inicio');
 }
 
 /* ================= FILTROS ================= */
@@ -1427,6 +1694,15 @@ function montarModos(){
 function atualizarConfig(){
   montarModos();
   const total = poolDe().length;
+  const rp = document.getElementById('res-provas');
+  if(rp) rp.textContent = provasSel.size === PROVAS.length ? 'Todas'
+    : (provasSel.size === 1 ? [...provasSel][0].replace('Revalida ','') : provasSel.size + ' provas');
+  const ra = document.getElementById('res-areas');
+  if(ra) ra.textContent = areasSel.size === AREAS.length ? 'Todas'
+    : (areasSel.size === 1 ? [...areasSel][0] : areasSel.size + ' áreas');
+  const rm = document.getElementById('res-modo');
+  if(rm) rm.textContent = modo === 'erradas' ? 'Só erros'
+    : (modo === 'marcadas' ? 'Só marcadas' : 'Todas');
   const campo = document.getElementById('qtd');
   campo.max = Math.max(1,total);
   if(+campo.value > total) campo.value = total || 1;
@@ -1434,6 +1710,15 @@ function atualizarConfig(){
     ? 'As questões são sorteadas dentro dos filtros escolhidos.'
     : 'Nenhuma questão com esses filtros.';
   document.getElementById('btn-comecar').disabled = total === 0;
+  const rq = document.getElementById('res-qtd');
+  if(rq) rq.textContent = (campo.value || 0) + ' questões';
+  const at = document.getElementById('acao-titulo');
+  if(at) at.textContent = total ? campo.value + ' questões sorteadas' : 'Sem questões';
+  const asb = document.getElementById('acao-sub');
+  if(asb) asb.textContent = total
+    ? (provasSel.size === PROVAS.length ? 'Todas as provas' : provasSel.size + ' prova(s)')
+      + ' · ' + (areasSel.size === AREAS.length ? 'todas as áreas' : areasSel.size + ' área(s)')
+    : 'Ajuste os filtros acima';
 }
 
 /* ================= PROVA ================= */
