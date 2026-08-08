@@ -881,11 +881,50 @@ body:not(.modo-app) .lateral{display:none}
     ou falha técnica. Interrupções pontuais não geram direito a devolução; interrupção
     prolongada é compensada com extensão equivalente do prazo de acesso.</p>
 
-    <h3>9. Seus dados</h3>
-    <p>São armazenados apenas o seu email e o seu histórico de respostas e desempenho,
-    com a única finalidade de fazer a plataforma funcionar. Nada é vendido nem compartilhado
-    com terceiros para fins comerciais. Você pode pedir a exclusão da sua conta e dos seus
-    dados a qualquer momento pelo email de contato, conforme a Lei Geral de Proteção de Dados.</p>
+    <h3>9. Tratamento de dados pessoais</h3>
+    <p>O tratamento dos seus dados segue a <strong>Lei nº 13.709/2018 — Lei Geral de Proteção
+    de Dados (LGPD)</strong>.</p>
+
+    <p><strong>Quem controla os dados.</strong> Nágella Maiara Jesus Pires, responsável pela
+    plataforma Revalidei, contato pelo email indicado ao final deste documento.</p>
+
+    <p><strong>O que é coletado e para quê.</strong></p>
+    <ul>
+      <li><strong>Email</strong> — identificar sua conta e liberar o acesso.
+      Base legal: execução de contrato (art. 7º, V).</li>
+      <li><strong>Nome completo e CPF</strong> — identificar de forma única o titular, evitar
+      duplicidade de cadastro e emitir documento fiscal quando houver pagamento. Não coletamos
+      endereço, telefone nem qualquer outro dado além do necessário para isso.
+      Base legal: execução de contrato e cumprimento de obrigação legal (art. 7º, II e V).</li>
+      <li><strong>Histórico de respostas e desempenho</strong> — fazer a plataforma funcionar,
+      mostrar sua evolução e permitir refazer o que você errou.
+      Base legal: execução de contrato (art. 7º, V).</li>
+      <li><strong>Comprovante e dados de pagamento</strong> — conferir a liberação do acesso.
+      Não guardamos dados de cartão, porque não trabalhamos com cartão.</li>
+    </ul>
+
+    <p><strong>Com quem os dados são compartilhados.</strong> Apenas com os prestadores de
+    infraestrutura necessários para o serviço existir — hospedagem e banco de dados
+    (Vercel e Supabase). Eles atuam como operadores e não usam seus dados para fins próprios.
+    <strong>Nada é vendido, cedido ou usado para publicidade de terceiros.</strong></p>
+
+    <p><strong>Por quanto tempo ficam guardados.</strong> Enquanto sua conta existir. Depois
+    do pedido de exclusão, os dados são apagados em até 30 dias, salvo o que a legislação
+    fiscal obrigar a manter — nesse caso, apenas o mínimo exigido e apenas para essa finalidade.</p>
+
+    <p><strong>Seus direitos.</strong> A qualquer momento você pode pedir, sem custo:
+    confirmação de que tratamos seus dados; acesso a eles; correção de dado incompleto ou
+    desatualizado; anonimização, bloqueio ou eliminação de dado desnecessário; portabilidade;
+    informação sobre com quem compartilhamos; e revogação do consentimento. Basta escrever
+    para o email de contato. A resposta é dada em até 15 dias.</p>
+
+    <p><strong>Segurança.</strong> O acesso é protegido por senha, o tráfego é criptografado
+    e os dados ficam isolados por regras no próprio banco, de modo que uma pessoa não alcança
+    os dados de outra. Nenhum sistema é imune a incidentes; havendo um que traga risco
+    relevante, você e a Autoridade Nacional de Proteção de Dados serão comunicados.</p>
+
+    <p><strong>Menores de idade.</strong> A plataforma se destina a pessoas graduadas em
+    Medicina e não é dirigida a menores de 18 anos.</p>
 
     <h3>10. Limite de responsabilidade</h3>
     <p>Na máxima extensão permitida pela legislação brasileira, a responsabilidade por
@@ -1100,11 +1139,24 @@ body:not(.modo-app) .lateral{display:none}
         <label for="senha">Senha</label>
         <input type="password" id="senha" autocomplete="current-password" placeholder="mínimo 6 caracteres">
       </div>
+
+      <div id="campos-cadastro" style="display:none">
+        <div class="campo-txt">
+          <label for="cd-nome">Nome completo</label>
+          <input type="text" id="cd-nome" autocomplete="name" placeholder="como no seu documento">
+        </div>
+        <div class="campo-txt">
+          <label for="cd-cpf">CPF</label>
+          <input type="text" id="cd-cpf" inputmode="numeric" maxlength="14"
+                 placeholder="000.000.000-00" oninput="mascaraCpf(this)">
+        </div>
+      </div>
       <label class="aceite" id="caixa-aceite" style="display:none">
         <input type="checkbox" id="chk-aceite">
-        <span>Li e aceito os <a onclick="abrirTermos(event)">termos de uso</a>.
-          Entendo que a plataforma é ferramenta de treino, que não há promessa de aprovação
-          e que devo conferir as fontes antes de aplicar qualquer conduta.</span>
+        <span>Li e aceito os <a onclick="abrirTermos(event)">termos de uso</a>, incluindo
+          a política de tratamento de dados. Entendo que a plataforma é ferramenta de treino,
+          que não há promessa de aprovação e que devo conferir as fontes antes de aplicar
+          qualquer conduta.</span>
       </label>
       <div class="aviso-prazo" id="aviso-teste" style="display:none;margin-bottom:14px">
         <svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg>
@@ -1489,12 +1541,39 @@ function comecarTeste(){
   setTimeout(() => document.getElementById('email').focus(), 120);
 }
 
+/* ---------- CPF, CEP ---------- */
+const soDigitos = v => (v || '').replace(/\D/g, '');
+
+function mascaraCpf(el){
+  let v = soDigitos(el.value).slice(0,11);
+  if(v.length > 9)      v = v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
+  else if(v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+  else if(v.length > 3) v = v.replace(/(\d{3})(\d+)/, '$1.$2');
+  el.value = v;
+}
+
+/* Confere os dois dígitos verificadores do CPF */
+function cpfValido(cpf){
+  const n = soDigitos(cpf);
+  if(n.length !== 11 || /^(\d)\1{10}$/.test(n)) return false;
+  for(const [ate, pos] of [[9,10],[10,11]]){
+    let soma = 0;
+    for(let i = 0; i < ate; i++) soma += Number(n[i]) * (pos - i);
+    let d = (soma * 10) % 11;
+    if(d === 10) d = 0;
+    if(d !== Number(n[ate])) return false;
+  }
+  return true;
+}
+
 function alternarCadastro(){
   cadastrando = !cadastrando;
   const cx = document.getElementById('caixa-aceite');
   cx.style.display = cadastrando ? '' : 'none';
   const av = document.getElementById('aviso-teste');
   if(av) av.style.display = cadastrando ? '' : 'none';
+  const cc = document.getElementById('campos-cadastro');
+  if(cc) cc.style.display = cadastrando ? '' : 'none';
   cx.classList.remove('faltou');
   document.getElementById('chk-aceite').checked = false;
   document.getElementById('btn-entrar').textContent = cadastrando ? 'Criar conta' : 'Entrar';
@@ -1510,6 +1589,15 @@ async function enviarLogin(){
   if(!email || !senha) return recado('Preencha email e senha.', 'erro');
   if(senha.length < 6) return recado('A senha precisa de pelo menos 6 caracteres.', 'erro');
 
+  if(cadastrando){
+    const nome = document.getElementById('cd-nome').value.trim();
+    const cpf  = document.getElementById('cd-cpf').value;
+    if(nome.split(/\s+/).filter(Boolean).length < 2)
+      return recado('Informe seu nome completo.', 'erro');
+    if(!cpfValido(cpf))
+      return recado('CPF inválido. Confira os números digitados.', 'erro');
+  }
+
   if(cadastrando && !document.getElementById('chk-aceite').checked){
     document.getElementById('caixa-aceite').classList.add('faltou');
     return recado('Para criar a conta é preciso aceitar os termos de uso.', 'erro');
@@ -1522,7 +1610,9 @@ async function enviarLogin(){
     const r = cadastrando
       ? await sb.auth.signUp({ email, password: senha, options: { data: {
           termos_versao: VERSAO_TERMOS,
-          termos_aceitos_em: new Date().toISOString()
+          termos_aceitos_em: new Date().toISOString(),
+          nome: document.getElementById('cd-nome').value.trim(),
+          cpf:  soDigitos(document.getElementById('cd-cpf').value)
         }}})
       : await sb.auth.signInWithPassword({ email, password: senha });
     if(r.error) throw r.error;
@@ -1538,6 +1628,8 @@ async function enviarLogin(){
       m.includes('invalid login') ? 'Email ou senha incorretos.' :
       m.includes('already registered') || m.includes('already been registered') ? 'Esse email já tem conta. Escolha Entrar.' :
       m.includes('email not confirmed') ? 'Confirme o link enviado para o seu email antes de entrar.' :
+      m.includes('cpf_ja_cadastrado') ? 'Já existe uma conta com esse CPF. Use a opção Entrar, ou escreva para ' + CONTATO + ' se precisar de ajuda.' :
+      m.includes('cpf_invalido') ? 'CPF inválido. Confira os números digitados.' :
       'Não foi possível concluir: ' + e.message, 'erro');
   }finally{
     btn.disabled = false;
