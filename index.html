@@ -692,9 +692,10 @@ body:not(.modo-app) .lateral{display:none}
     <h2>Dúvidas</h2>
   </div>
   <details class="duvida"><summary>Como funcionam os 3 dias grátis?</summary>
-    <p>Crie sua conta e o acesso completo é liberado na hora, por 3 dias. Não pedimos cartão
-       e nada é cobrado automaticamente. Quando o prazo acabar, o acesso simplesmente para —
-       e seu histórico fica guardado caso você decida continuar.</p></details>
+    <p>Crie sua conta e o acesso é liberado na hora, por 3 dias. Não pedimos cartão e nada
+       é cobrado automaticamente. O teste permite responder um número limitado de questões,
+       o suficiente para você sentir como a plataforma funciona. Quando o prazo ou o limite
+       acabar, o acesso para — e seu histórico fica guardado caso você decida continuar.</p></details>
   <details class="duvida"><summary>As questões são as oficiais?</summary>
     <p>Sim. Vieram dos cadernos publicados pelo INEP, com os gabaritos definitivos.
        As questões anuladas pela banca ficaram de fora, já que não têm resposta correta.</p></details>
@@ -722,7 +723,7 @@ body:not(.modo-app) .lateral{display:none}
   <div class="chamada-final">
     <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
     <h2 style="position:relative">Três dias grátis</h2>
-    <p style="position:relative">Crie sua conta e use tudo por 3 dias. Sem cartão. Depois, planos a partir de R$ 9,90.</p>
+    <p style="position:relative">Crie sua conta e teste por 3 dias, sem cartão. Depois, planos a partir de R$ 9,90.</p>
     <button class="b-destaque" style="position:relative" onclick="comecarTeste()">Criar conta grátis</button>
   </div>
 
@@ -773,8 +774,8 @@ body:not(.modo-app) .lateral{display:none}
 
       <div class="aviso-prazo">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <p><strong>Liberação em até 12 horas.</strong> A conferência é feita por uma pessoa,
-        não por robô. Você recebe um aviso assim que o acesso estiver valendo.</p>
+        <p><strong>Liberação em até 12 horas.</strong> Você recebe um aviso assim que
+        o acesso estiver valendo.</p>
       </div>
     </div>
 
@@ -866,8 +867,8 @@ body:not(.modo-app) .lateral{display:none}
 
     <h3>7. Pagamento, cancelamento e devolução</h3>
     <ul>
-      <li>Toda conta nova recebe <strong>3 dias de acesso completo, sem custo e sem cartão</strong>.
-      O período é único por email e não é renovado.</li>
+      <li>Toda conta nova recebe <strong>3 dias de teste sem custo e sem cartão</strong>,
+      com número limitado de questões. O teste é único por CPF e não é renovado.</li>
       <li>O acesso vale pelo período contratado e <strong>não renova automaticamente</strong>.</li>
       <li>Não há cobrança recorrente nem armazenamento de dados de cartão.</li>
       <li>A liberação é manual e pode levar algumas horas após o envio do comprovante.</li>
@@ -1160,8 +1161,8 @@ body:not(.modo-app) .lateral{display:none}
       </label>
       <div class="aviso-prazo" id="aviso-teste" style="display:none;margin-bottom:14px">
         <svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg>
-        <p><strong>3 dias grátis, começando agora.</strong> Acesso completo, sem cartão.
-        Quando o prazo acabar, você escolhe se continua.</p>
+        <p><strong>3 dias grátis, começando agora.</strong> Sem cartão. O teste tem um
+        número limitado de questões — depois disso, você escolhe se continua.</p>
       </div>
       <button class="b-signal" id="btn-entrar" style="width:100%" onclick="enviarLogin()">Entrar</button>
     </div>
@@ -1893,16 +1894,35 @@ async function entrarNoApp(){
 }
 
 async function telaSemAcesso(){
-  let ate = null;
-  try{ const r = await sb.rpc('meu_acesso'); ate = r.data; }catch(e){}
+  let st = null;
+  try{ const r = await sb.rpc('status_acesso'); st = r.data; }catch(e){}
+  if(!st){ try{ const r = await sb.rpc('meu_acesso'); st = { ate: r.data }; }catch(e){} }
+  st = st || {};
+
+  const ate = st.ate;
   const venceu = ate && new Date(ate + 'T23:59:59') < new Date();
-  document.getElementById('titulo-sem-acesso').textContent =
-    venceu ? 'Seu acesso venceu' : 'Acesso ainda não liberado';
-  document.getElementById('texto-sem-acesso').textContent = venceu
-    ? 'Seu acesso valeu até ' + new Date(ate + 'T12:00').toLocaleDateString('pt-BR')
-      + '. Escolha um plano para continuar de onde parou — seu histórico está guardado.'
-    : 'Este email ainda não tem acesso ativo. Escolha um plano para continuar.';
+  const noPrazo = ate && !venceu;
+  const acabouOTeste = noPrazo && st.origem === 'teste'
+                       && Number(st.respondidas) >= Number(st.limite);
+
+  let titulo, texto;
+  if(acabouOTeste){
+    titulo = 'Seu teste grátis chegou ao fim';
+    texto  = 'Você usou todas as questões do teste. Escolha um plano para continuar '
+           + 'com acesso completo — seu histórico e seus erros estão guardados.';
+  }else if(venceu){
+    titulo = 'Seu acesso venceu';
+    texto  = 'Seu acesso valeu até ' + new Date(ate + 'T12:00').toLocaleDateString('pt-BR')
+           + '. Escolha um plano para continuar de onde parou — seu histórico está guardado.';
+  }else{
+    titulo = 'Acesso ainda não liberado';
+    texto  = 'Este email ainda não tem acesso ativo. Escolha um plano para continuar.';
+  }
+
+  document.getElementById('titulo-sem-acesso').textContent = titulo;
+  document.getElementById('texto-sem-acesso').textContent = texto;
   document.getElementById('email-sem-acesso').textContent = usuario ? usuario.email : '';
+  pintarSuporte();
   irPara('tela-sem-acesso');
 }
 
