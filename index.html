@@ -274,6 +274,37 @@ body:not(.modo-app) .lateral{display:none}
 .suporte .b-signal{margin-left:auto;white-space:nowrap}
 @media(max-width:560px){.suporte{flex-wrap:wrap}.suporte .b-signal{margin-left:0;width:100%}}
 
+/* pix */
+.pix-caixa{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:24px}
+.pix-valor{text-align:center;padding-bottom:20px;border-bottom:1px solid var(--rule);margin-bottom:20px}
+.pix-valor .plano-nome{margin-bottom:8px}
+.pix-valor .v{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.pix-valor .v small{font-size:17px;font-weight:700;color:var(--ink-soft);margin-right:2px}
+.pix-codigo{background:var(--paper);border:1px dashed var(--rule);border-radius:11px;
+  padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;
+  color:var(--ink-soft);word-break:break-all;line-height:1.55;max-height:96px;overflow:hidden}
+.pix-copiar{width:100%;margin-top:11px;padding:14px}
+.pix-copiar.feito{background:var(--certo)}
+.pix-chave{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:12px}
+.pix-chave b{color:var(--ink);font-size:14.5px;display:block;margin-top:3px;word-break:break-all}
+.aviso-prazo{background:#EAF2FC;border:1px solid #C6DDF7;border-radius:12px;padding:15px 17px;
+  margin-top:18px;display:flex;gap:12px;align-items:flex-start}
+.aviso-prazo svg{width:19px;height:19px;flex:0 0 19px;fill:none;stroke:var(--signal);
+  stroke-width:2;stroke-linecap:round;margin-top:1px}
+.aviso-prazo p{font-size:13.5px;color:#0F3A6B;line-height:1.6;margin:0}
+.confirmado{text-align:center;padding:16px 0}
+.confirmado .marca-ok{width:62px;height:62px;border-radius:50%;background:#E7F5EE;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center}
+.confirmado .marca-ok svg{width:29px;height:29px;fill:none;stroke:var(--certo);stroke-width:2.6;
+  stroke-linecap:round;stroke-linejoin:round}
+
+.pedido{display:flex;align-items:center;gap:13px;border:1px solid var(--rule);border-radius:11px;
+  padding:13px 15px;margin-bottom:9px;background:var(--surface);flex-wrap:wrap}
+.pedido.novo{border-color:var(--ambar);background:#FFFDF8}
+.pedido .quem{flex:1;min-width:190px}
+.pedido .quem b{display:block;font-size:14px}
+.pedido .quem span{font-size:12.5px;color:var(--ink-soft);word-break:break-all}
+
 /* termos */
 .doc{max-width:760px;margin:0 auto}
 .doc h3{font-size:16px;margin:26px 0 9px;letter-spacing:-.01em}
@@ -601,12 +632,11 @@ body:not(.modo-app) .lateral{display:none}
     <p class="sub-capa">Você responde. A gente mostra onde apertar.</p>
 
     <div class="cta">
-      <button class="b-destaque" onclick="irPara('tela-login')">Entrar na plataforma</button>
+      <button class="b-destaque" onclick="comecarTeste()">Testar grátis por 3 dias</button>
       <button class="b-vidro" onclick="irPara('tela-planos')">Ver planos</button>
     </div>
-    <p class="selo-gratis">A partir de R$ 9,90 · sem fidelidade · <button onclick="irPara('tela-login')" style="background:none;border:none;color:var(--ambar-claro);text-decoration:underline;font-size:13px;padding:0;font-weight:600">já tenho acesso</button></p>
+    <p class="selo-gratis">Sem cartão, sem compromisso · <button onclick="irPara('tela-login')" style="background:none;border:none;color:var(--ambar-claro);text-decoration:underline;font-size:13px;padding:0;font-weight:600">já tenho conta</button></p>
 
-    <div class="provas-hero" id="pills-provas"></div>
   </div>
 
   <div class="faixa-secao">
@@ -661,9 +691,10 @@ body:not(.modo-app) .lateral{display:none}
   <div class="faixa-secao">
     <h2>Dúvidas</h2>
   </div>
-  <details class="duvida"><summary>Preciso pagar alguma coisa?</summary>
-    <p>Não. O acesso é gratuito. Você pode responder sem sequer criar conta — a conta serve
-       para guardar seu histórico e sincronizar entre celular e computador.</p></details>
+  <details class="duvida"><summary>Como funcionam os 3 dias grátis?</summary>
+    <p>Crie sua conta e o acesso completo é liberado na hora, por 3 dias. Não pedimos cartão
+       e nada é cobrado automaticamente. Quando o prazo acabar, o acesso simplesmente para —
+       e seu histórico fica guardado caso você decida continuar.</p></details>
   <details class="duvida"><summary>As questões são as oficiais?</summary>
     <p>Sim. Vieram dos cadernos publicados pelo INEP, com os gabaritos definitivos.
        As questões anuladas pela banca ficaram de fora, já que não têm resposta correta.</p></details>
@@ -690,15 +721,84 @@ body:not(.modo-app) .lateral{display:none}
 
   <div class="chamada-final">
     <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
-    <h2 style="position:relative">Comece agora</h2>
-    <p style="position:relative">Planos a partir de R$ 9,90 por semana. Sem cartão, sem fidelidade.</p>
-    <button class="b-destaque" style="position:relative" onclick="irPara('tela-planos')">Ver planos</button>
+    <h2 style="position:relative">Três dias grátis</h2>
+    <p style="position:relative">Crie sua conta e use tudo por 3 dias. Sem cartão. Depois, planos a partir de R$ 9,90.</p>
+    <button class="b-destaque" style="position:relative" onclick="comecarTeste()">Criar conta grátis</button>
   </div>
 
   <p class="rodape">Questões das provas objetivas do Revalida, publicadas pelo INEP.
     Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.<br>
     <button onclick="abrirTermos(event)" style="background:none;border:none;
       color:var(--signal);text-decoration:underline;font-size:12px;padding:4px">Termos de uso</button></p>
+</section>
+
+<!-- ===== PIX ===== -->
+<section id="tela-pix" class="screen">
+  <div class="hero" style="padding:34px 26px 28px">
+    <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
+    <span class="tarja">Pagamento por PIX</span>
+    <h1 class="manchete" style="font-size:clamp(23px,3.8vw,32px)">Falta pouco</h1>
+    <p class="sub-capa">Pague pelo PIX e nos avise. Seu acesso é liberado em seguida.</p>
+  </div>
+
+  <div class="doc" style="margin-top:16px">
+    <div class="pix-caixa" id="passo-pagar">
+      <div class="pix-valor">
+        <div class="plano-nome" id="pix-plano"></div>
+        <div class="v"><small>R$</small><span id="pix-valor"></span></div>
+      </div>
+
+      <p class="eyebrow" style="margin-bottom:10px">1. Copie o código PIX</p>
+      <div class="pix-codigo" id="pix-codigo"></div>
+      <button class="b-signal pix-copiar" id="btn-copiar" onclick="copiarPix()">Copiar código PIX</button>
+      <p class="pix-chave">Ou pague pela chave<b id="pix-chave"></b></p>
+
+      <p class="eyebrow" style="margin:22px 0 10px">2. Depois de pagar, avise</p>
+      <div class="form-admin">
+        <div class="campo-txt largo">
+          <label for="pd-email">Email que você usa no site</label>
+          <input type="email" id="pd-email" placeholder="seu@email.com">
+        </div>
+        <div class="campo-txt">
+          <label for="pd-nome">Nome</label>
+          <input type="text" id="pd-nome" placeholder="como quiser ser chamada">
+        </div>
+        <div class="campo-txt">
+          <label for="pd-tel">WhatsApp</label>
+          <input type="tel" id="pd-tel" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+      <div class="recado" id="recado-pix"></div>
+      <button class="b-signal" style="width:100%;padding:14px" onclick="avisarPagamento()">Já paguei, avisar</button>
+
+      <div class="aviso-prazo">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <p><strong>Liberação em até 12 horas.</strong> A conferência é feita por uma pessoa,
+        não por robô. Você recebe um aviso assim que o acesso estiver valendo.</p>
+      </div>
+    </div>
+
+    <div class="pix-caixa confirmado" id="passo-pronto" style="display:none">
+      <div class="marca-ok"><svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 7"/></svg></div>
+      <h2>Recebemos seu aviso</h2>
+      <p class="lead" id="texto-confirmado" style="margin-bottom:18px"></p>
+      <div class="aviso-prazo" style="text-align:left">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <p>Seu acesso é liberado em até <strong>12 horas</strong>. Quando estiver valendo,
+        é só entrar com o mesmo email. Qualquer dúvida, escreva para
+        <span class="email-suporte"></span>.</p>
+      </div>
+      <div class="acoes" style="justify-content:center">
+        <button class="b-neutro" onclick="irPara('tela-login')">Ir para o login</button>
+        <button class="b-neutro" onclick="irPara('tela-capa')">Início</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="acoes" style="justify-content:center;margin-top:18px">
+    <button class="b-neutro" onclick="irPara('tela-planos')">← Ver outros planos</button>
+  </div>
+  <p class="rodape">Projeto independente, sem vínculo com o INEP ou com o Ministério da Educação.</p>
 </section>
 
 <!-- ===== TERMOS ===== -->
@@ -766,6 +866,8 @@ body:not(.modo-app) .lateral{display:none}
 
     <h3>7. Pagamento, cancelamento e devolução</h3>
     <ul>
+      <li>Toda conta nova recebe <strong>3 dias de acesso completo, sem custo e sem cartão</strong>.
+      O período é único por email e não é renovado.</li>
       <li>O acesso vale pelo período contratado e <strong>não renova automaticamente</strong>.</li>
       <li>Não há cobrança recorrente nem armazenamento de dados de cartão.</li>
       <li>A liberação é manual e pode levar algumas horas após o envio do comprovante.</li>
@@ -815,7 +917,7 @@ body:not(.modo-app) .lateral{display:none}
     <svg class="rabiscos" aria-hidden="true"><rect width="100%" height="100%" fill="url(#est)"/></svg>
     <span class="tarja">Planos</span>
     <h1 class="manchete" style="font-size:clamp(26px,4.6vw,40px)">Escolha o seu <em>ritmo</em></h1>
-    <p class="sub-capa">Todas as provas, todas as áreas. Sem fidelidade.</p>
+    <p class="sub-capa">Depois dos 3 dias grátis, escolha como continuar. Sem fidelidade.</p>
   </div>
 
   <div class="planos">
@@ -829,7 +931,7 @@ body:not(.modo-app) .lateral{display:none}
         <li>Gabarito comentado</li>
         <li>Desempenho por área</li>
       </ul>
-      <button class="b-neutro" onclick="assinar('Semanal', '9,90')">Assinar</button>
+      <button class="b-neutro" onclick="abrirPix('Semanal', '9,90')">Assinar</button>
     </div>
 
     <div class="plano destaque">
@@ -844,7 +946,7 @@ body:not(.modo-app) .lateral{display:none}
         <li>Refazer só o que errou</li>
         <li>Histórico em qualquer aparelho</li>
       </ul>
-      <button class="b-signal" onclick="assinar('Mensal', '19,90')">Assinar</button>
+      <button class="b-signal" onclick="abrirPix('Mensal', '19,90')">Assinar</button>
     </div>
 
     <div class="plano">
@@ -859,7 +961,7 @@ body:not(.modo-app) .lateral{display:none}
         <li>Refazer só o que errou</li>
         <li>Histórico em qualquer aparelho</li>
       </ul>
-      <button class="b-neutro" onclick="assinar('Bimestral', '34,50')">Assinar</button>
+      <button class="b-neutro" onclick="abrirPix('Bimestral', '34,50')">Assinar</button>
     </div>
   </div>
 
@@ -938,6 +1040,12 @@ body:not(.modo-app) .lateral{display:none}
     </div>
   </div>
 
+  <div class="card" id="card-pedidos" style="margin-bottom:14px;display:none">
+    <p class="eyebrow">Aguardando liberação</p>
+    <p class="dica" style="margin:8px 0 14px">Quem avisou que pagou e ainda não foi liberado.</p>
+    <div id="lista-pedidos"></div>
+  </div>
+
   <div class="card">
     <p class="eyebrow">Quem tem acesso</p>
     <div class="resumo-admin" id="resumo-admin"></div>
@@ -979,7 +1087,7 @@ body:not(.modo-app) .lateral{display:none}
   <div class="card" style="max-width:420px;margin:6vh auto 0">
     <p class="eyebrow">Exame Nacional de Revalidação</p>
     <h1 style="margin-bottom:4px">Banco de questões</h1>
-    <p class="lead" id="sub-login">Entre com o email que foi liberado para você.</p>
+    <p class="lead" id="sub-login">Crie sua conta e teste grátis por 3 dias, sem cartão.</p>
 
     <div class="recado" id="recado-login"></div>
 
@@ -998,6 +1106,11 @@ body:not(.modo-app) .lateral{display:none}
           Entendo que a plataforma é ferramenta de treino, que não há promessa de aprovação
           e que devo conferir as fontes antes de aplicar qualquer conduta.</span>
       </label>
+      <div class="aviso-prazo" id="aviso-teste" style="display:none;margin-bottom:14px">
+        <svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8z"/></svg>
+        <p><strong>3 dias grátis, começando agora.</strong> Acesso completo, sem cartão.
+        Quando o prazo acabar, você escolhe se continua.</p>
+      </div>
       <button class="b-signal" id="btn-entrar" style="width:100%" onclick="enviarLogin()">Entrar</button>
     </div>
 
@@ -1370,10 +1483,18 @@ function abrirTermos(ev){
 
 function voltarDosTermos(){ irPara(telaAntesDosTermos); }
 
+function comecarTeste(){
+  if(!cadastrando) alternarCadastro();
+  irPara('tela-login');
+  setTimeout(() => document.getElementById('email').focus(), 120);
+}
+
 function alternarCadastro(){
   cadastrando = !cadastrando;
   const cx = document.getElementById('caixa-aceite');
   cx.style.display = cadastrando ? '' : 'none';
+  const av = document.getElementById('aviso-teste');
+  if(av) av.style.display = cadastrando ? '' : 'none';
   cx.classList.remove('faltou');
   document.getElementById('chk-aceite').checked = false;
   document.getElementById('btn-entrar').textContent = cadastrando ? 'Criar conta' : 'Entrar';
@@ -1453,13 +1574,79 @@ async function verificarAdmin(){
   catch(e){ ehAdmin = false; }
   const b = document.getElementById('nav-admin');
   if(b) b.style.display = ehAdmin ? '' : 'none';
+  if(ehAdmin) avisarPendentes();
 }
 
 async function abrirAdmin(){
   if(!ehAdmin) return;
   recadoAdmin('', '');
   irPara('tela-admin');
+  await carregarPedidos();
   await carregarAcessos();
+}
+
+let listaPedidos = [];
+
+async function carregarPedidos(){
+  try{
+    const { data, error } = await sb.from('pedidos')
+      .select('id,criado_em,nome,email,telefone,plano,valor,situacao')
+      .eq('situacao','aguardando');
+    if(error) throw error;
+    listaPedidos = (data||[]).sort((a,b) => new Date(b.criado_em) - new Date(a.criado_em));
+  }catch(e){ listaPedidos = []; }
+
+  const card = document.getElementById('card-pedidos');
+  card.style.display = listaPedidos.length ? '' : 'none';
+  if(!listaPedidos.length) return;
+
+  const dias = { 'Semanal':7, 'Mensal':30, 'Bimestral':60 };
+  document.getElementById('lista-pedidos').innerHTML = listaPedidos.map(p => {
+    const d = new Date(p.criado_em);
+    const horas = Math.floor((Date.now() - d) / 3600000);
+    return '<div class="pedido' + (horas < 12 ? ' novo' : '') + '">'
+      + '<div class="quem"><b>' + escapar(p.nome || p.email) + '</b><span>'
+      + escapar(p.email) + (p.telefone ? ' · ' + escapar(p.telefone) : '')
+      + ' · ' + d.toLocaleDateString('pt-BR') + ' '
+      + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) + '</span></div>'
+      + '<span class="etiqueta ' + (horas >= 12 ? 'fora' : 'perto') + '">'
+      + p.plano + ' · R$ ' + Number(p.valor).toFixed(2).replace('.',',')
+      + (horas >= 12 ? ' · atrasado' : '') + '</span>'
+      + '<div class="acoes-linha">'
+      + '<button class="b-signal" data-id="' + p.id + '" data-em="' + escapar(p.email)
+      + '" data-dias="' + (dias[p.plano] || 30) + '" data-nome="' + escapar(p.nome || '')
+      + '" onclick="liberarPedido(this)">Liberar</button>'
+      + '<button class="b-neutro" data-id="' + p.id + '" onclick="descartarPedido(this)">Descartar</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+async function liberarPedido(btn){
+  const { id, em, dias, nome } = btn.dataset;
+  const ate = new Date(); ate.setDate(ate.getDate() + Number(dias));
+  const data = ate.toISOString().slice(0,10);
+  try{
+    let r = await sb.from('acessos').upsert({
+      email: em, liberado_ate: data, nome: nome || null,
+      observacao: 'PIX · liberado pelo painel'
+    }, { onConflict: 'email' });
+    if(r.error) throw r.error;
+    r = await sb.from('pedidos').update({ situacao:'liberado' }).eq('id', Number(id));
+    if(r.error) throw r.error;
+    recadoAdmin(em + ' liberado até ' + soData(data).toLocaleDateString('pt-BR') + '.', 'ok');
+    await carregarPedidos();
+    await carregarAcessos();
+  }catch(e){ recadoAdmin('Não foi possível liberar: ' + (e.message || e), 'erro'); }
+}
+
+async function descartarPedido(btn){
+  if(!confirm('Descartar este pedido? Use quando o pagamento não foi confirmado.')) return;
+  try{
+    const { error } = await sb.from('pedidos')
+      .update({ situacao:'cancelado' }).eq('id', Number(btn.dataset.id));
+    if(error) throw error;
+    await carregarPedidos();
+  }catch(e){ recadoAdmin('Não foi possível descartar: ' + (e.message || e), 'erro'); }
 }
 
 async function carregarAcessos(avisar){
@@ -1588,6 +1775,17 @@ async function bloquear(email){
   }catch(e){ recadoAdmin('Não foi possível bloquear: ' + (e.message || e), 'erro'); }
 }
 
+async function avisarPendentes(){
+  try{
+    const { data } = await sb.from('pedidos').select('id').eq('situacao','aguardando');
+    const n = (data||[]).length;
+    const b = document.getElementById('nav-admin');
+    if(b && n) b.innerHTML = b.innerHTML.replace(/Administração.*/,
+      'Administração <span style="background:var(--ambar-claro);color:#3A2607;border-radius:99px;'
+      + 'padding:1px 7px;font-size:10.5px;font-weight:800;margin-left:auto">' + n + '</span>');
+  }catch(e){}
+}
+
 /* ================= ENTRADA ================= */
 async function entrarNoApp(){
   try{
@@ -1610,8 +1808,8 @@ async function telaSemAcesso(){
     venceu ? 'Seu acesso venceu' : 'Acesso ainda não liberado';
   document.getElementById('texto-sem-acesso').textContent = venceu
     ? 'Seu acesso valeu até ' + new Date(ate + 'T12:00').toLocaleDateString('pt-BR')
-      + '. Escolha um plano para renovar.'
-    : 'Este email ainda não tem assinatura ativa. Escolha um plano para começar.';
+      + '. Escolha um plano para continuar de onde parou — seu histórico está guardado.'
+    : 'Este email ainda não tem acesso ativo. Escolha um plano para continuar.';
   document.getElementById('email-sem-acesso').textContent = usuario ? usuario.email : '';
   irPara('tela-sem-acesso');
 }
@@ -1769,6 +1967,114 @@ function setQtd(n){
 
 /* ================= PLANOS ================= */
 const CONTATO = 'revalideibr@gmail.com';
+
+/* ================= PIX ================= */
+/* ============================================================
+   DADOS DO SEU PIX
+   Preencha os três valores abaixo com os dados da sua conta.
+   PIX_NOME e PIX_CIDADE: sem acento, em maiúsculas.
+   ============================================================ */
+const PIX_CHAVE  = "revalideibr@gmail.com";
+const PIX_NOME   = "NAGELLA MAIARA J PIRES";
+const PIX_CIDADE = "IPORA";
+/* ========================================================== */
+
+let pedidoAtual = null;
+
+/* Monta o "copia e cola" do PIX no padrão EMV do Banco Central */
+function montarPix(valor){
+  const t = (id, v) => id + String(v.length).padStart(2,'0') + v;
+  const semAcento = x => x.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+                          .replace(/[^A-Za-z0-9 .-]/g,'').toUpperCase();
+
+  const conta = t('00','BR.GOV.BCB.PIX') + t('01', PIX_CHAVE);
+  let p = t('00','01') + t('01','12')
+        + t('26', conta)
+        + t('52','0000') + t('53','986')
+        + t('54', valor.toFixed(2))
+        + t('58','BR')
+        + t('59', semAcento(PIX_NOME).slice(0,25))
+        + t('60', semAcento(PIX_CIDADE).slice(0,15))
+        + t('62', t('05','***'));
+  p += '6304';
+
+  // CRC16-CCITT (polinômio 0x1021, inicial 0xFFFF)
+  let crc = 0xFFFF;
+  for(let i = 0; i < p.length; i++){
+    crc ^= p.charCodeAt(i) << 8;
+    for(let j = 0; j < 8; j++)
+      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
+  }
+  return p + crc.toString(16).toUpperCase().padStart(4,'0');
+}
+
+function abrirPix(plano, valorTexto){
+  const valor = parseFloat(valorTexto.replace(',','.'));
+  pedidoAtual = { plano, valor, texto: valorTexto };
+  document.getElementById('pix-plano').textContent = 'Plano ' + plano;
+  document.getElementById('pix-valor').textContent = valorTexto;
+  document.getElementById('pix-chave').textContent = PIX_CHAVE;
+  document.getElementById('pix-codigo').textContent = montarPix(valor);
+  document.getElementById('passo-pagar').style.display = '';
+  document.getElementById('passo-pronto').style.display = 'none';
+  const b = document.getElementById('btn-copiar');
+  b.textContent = 'Copiar código PIX'; b.className = 'b-signal pix-copiar';
+  recadoPix('', '');
+  pintarSuporte();
+  irPara('tela-pix');
+}
+
+async function copiarPix(){
+  const codigo = document.getElementById('pix-codigo').textContent;
+  const b = document.getElementById('btn-copiar');
+  try{ await navigator.clipboard.writeText(codigo); }
+  catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = codigo; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(_){}
+    ta.remove();
+  }
+  b.textContent = 'Código copiado';
+  b.className = 'b-signal pix-copiar feito';
+  setTimeout(() => {
+    b.textContent = 'Copiar código PIX';
+    b.className = 'b-signal pix-copiar';
+  }, 2600);
+}
+
+function recadoPix(txt, tipo){
+  const r = document.getElementById('recado-pix');
+  r.textContent = txt || '';
+  r.className = txt ? 'recado ' + tipo : 'recado';
+}
+
+async function avisarPagamento(){
+  const email = (document.getElementById('pd-email').value || '').trim().toLowerCase();
+  const nome  = document.getElementById('pd-nome').value.trim();
+  const tel   = document.getElementById('pd-tel').value.trim();
+
+  if(!email || !email.includes('@')) return recadoPix('Informe o email que você usa no site.', 'erro');
+  if(!pedidoAtual) return recadoPix('Escolha um plano antes.', 'erro');
+
+  try{
+    if(sb){
+      const { error } = await sb.from('pedidos').insert({
+        nome: nome || null, email, telefone: tel || null,
+        plano: pedidoAtual.plano, valor: pedidoAtual.valor
+      });
+      if(error) throw error;
+    }
+    document.getElementById('texto-confirmado').textContent =
+      'Plano ' + pedidoAtual.plano + ' · R$ ' + pedidoAtual.texto + ' · ' + email;
+    document.getElementById('passo-pagar').style.display = 'none';
+    document.getElementById('passo-pronto').style.display = '';
+    pintarSuporte();
+    window.scrollTo({top:0});
+  }catch(e){
+    recadoPix('Não conseguimos registrar seu aviso. Escreva para ' + CONTATO
+      + ' com o comprovante. Detalhe: ' + (e.message || e), 'erro');
+  }
+}
 
 function falarSuporte(){
   window.location.href = 'mailto:' + CONTATO
