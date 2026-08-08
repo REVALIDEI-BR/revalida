@@ -357,6 +357,17 @@ body:not(.modo-app) .lateral{display:none}
   display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800}
 .passo-pgto span{font-size:13.5px;color:var(--ink-soft);line-height:1.55;padding-top:3px}
 
+/* usuários */
+.usuario-linha{display:flex;align-items:center;gap:13px;border:1px solid var(--rule);
+  border-radius:11px;padding:13px 15px;margin-bottom:8px;background:var(--surface);flex-wrap:wrap}
+.usuario-linha.recente{border-color:var(--signal);background:#F6FAFF}
+.usuario-linha .quem{flex:1;min-width:210px}
+.usuario-linha .quem b{display:block;font-size:14px}
+.usuario-linha .quem span{font-size:12.5px;color:var(--ink-soft);word-break:break-all;line-height:1.5}
+.etiqueta.novo{background:#EAF2FC;color:var(--signal)}
+.b-excluir{background:transparent;color:var(--errado);border:1px solid #EFC9C5;padding:7px 11px;font-size:12px}
+.b-excluir:hover{background:#FCEDEC}
+
 /* painel admin */
 .linha-acesso{display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
   border-radius:11px;padding:12px 14px;margin-bottom:8px;background:var(--surface);flex-wrap:wrap}
@@ -1086,6 +1097,14 @@ body:not(.modo-app) .lateral{display:none}
     <div id="lista-pedidos"></div>
   </div>
 
+  <div class="card" id="card-usuarios" style="margin-bottom:14px">
+    <p class="eyebrow">Usuários cadastrados</p>
+    <div class="resumo-admin" id="resumo-usuarios"></div>
+    <input class="busca-admin" id="us-busca" placeholder="Buscar por nome, email ou CPF…"
+           oninput="listarUsuarios()">
+    <div id="lista-usuarios"></div>
+  </div>
+
   <div class="card">
     <p class="eyebrow">Quem tem acesso</p>
     <div class="resumo-admin" id="resumo-admin"></div>
@@ -1096,7 +1115,7 @@ body:not(.modo-app) .lateral{display:none}
 
   <div class="acoes">
     <button class="b-neutro" onclick="irPara('tela-inicio')">← Voltar</button>
-    <button class="b-neutro" onclick="carregarAcessos(true)">Atualizar lista</button>
+    <button class="b-neutro" onclick="atualizarPainel()">Atualizar listas</button>
   </div>
 </div></div>
 </section>
@@ -1675,10 +1694,120 @@ async function abrirAdmin(){
   recadoAdmin('', '');
   irPara('tela-admin');
   await carregarPedidos();
+  await carregarUsuarios();
   await carregarAcessos();
 }
 
-let listaPedidos = [];
+let listaPedidos = [], listaUsuarios = [];
+
+const cpfMascarado = c => {
+  const n = (c || '').replace(/\D/g,'');
+  return n.length === 11
+    ? n.slice(0,3) + '.' + n.slice(3,6) + '.' + n.slice(6,9) + '-' + n.slice(9)
+    : (c || '—');
+};
+
+async function carregarUsuarios(){
+  try{
+    const { data, error } = await sb.rpc('listar_usuarios');
+    if(error) throw error;
+    listaUsuarios = data || [];
+  }catch(e){
+    listaUsuarios = [];
+    document.getElementById('lista-usuarios').innerHTML =
+      '<div class="vazio">Não foi possível carregar: ' + escapar(e.message || String(e)) + '</div>';
+    return;
+  }
+  listarUsuarios();
+}
+
+function listarUsuarios(){
+  const busca = (document.getElementById('us-busca').value || '').toLowerCase().trim();
+  const alvo = document.getElementById('lista-usuarios');
+
+  const agora = Date.now();
+  const novos = listaUsuarios.filter(u => (agora - new Date(u.criado_em)) < 172800000).length;
+  const emTeste = listaUsuarios.filter(u => u.origem === 'teste'
+    && u.liberado_ate && new Date(u.liberado_ate + 'T23:59:59') >= new Date()).length;
+  const pagantes = listaUsuarios.filter(u => u.origem && u.origem !== 'teste').length;
+
+  document.getElementById('resumo-usuarios').innerHTML =
+      '<div class="bloco"><b>' + listaUsuarios.length + '</b><span>Cadastrados</span></div>'
+    + '<div class="bloco"><b>' + novos + '</b><span>Novos em 48h</span></div>'
+    + '<div class="bloco"><b>' + emTeste + '</b><span>Em teste</span></div>'
+    + '<div class="bloco certo"><b>' + pagantes + '</b><span>Pagantes</span></div>';
+
+  const lista = listaUsuarios.filter(u => !busca ||
+    ((u.nome||'') + ' ' + (u.email||'') + ' ' + (u.cpf||'')).toLowerCase().includes(busca));
+
+  if(!lista.length){
+    alvo.innerHTML = '<div class="vazio">' + (busca ? 'Ninguém com esse termo.'
+      : 'Nenhum usuário cadastrado ainda.') + '</div>';
+    return;
+  }
+
+  alvo.innerHTML = lista.map(u => {
+    const d = new Date(u.criado_em);
+    const recente = (agora - d) < 172800000;
+    let sit = 'Sem acesso', cls = 'fora';
+    if(u.liberado_ate){
+      const dias = diasAte(u.liberado_ate);
+      if(dias < 0){ sit = 'Vencido há ' + Math.abs(dias) + 'd'; cls = 'fora'; }
+      else if(u.origem === 'teste'){ sit = 'Em teste · ' + dias + 'd'; cls = 'perto'; }
+      else { sit = 'Ativo · ' + dias + 'd'; cls = 'ativo'; }
+    }
+    return '<div class="usuario-linha' + (recente ? ' recente' : '') + '">'
+      + '<div class="quem"><b>' + escapar(u.nome || '—')
+      + (recente ? ' <span class="etiqueta novo">novo</span>' : '') + '</b><span>'
+      + escapar(u.email) + ' · CPF ' + cpfMascarado(u.cpf) + '<br>'
+      + 'cadastro ' + d.toLocaleDateString('pt-BR') + ' · '
+      + (u.respondidas || 0) + ' questões respondidas</span></div>'
+      + '<span class="etiqueta ' + cls + '">' + sit + '</span>'
+      + '<div class="acoes-linha">'
+      + '<button class="b-neutro" data-em="' + escapar(u.email)
+      + '" onclick="usarNoFormulario(this)">Liberar</button>'
+      + '<button class="b-excluir" data-id="' + u.usuario + '" data-em="' + escapar(u.email)
+      + '" onclick="excluirUsuario(this)">Excluir</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+function usarNoFormulario(btn){
+  const u = listaUsuarios.find(x => x.email === btn.dataset.em);
+  document.getElementById('ad-email').value = btn.dataset.em;
+  if(u && u.nome) document.getElementById('ad-nome').value = u.nome;
+  window.scrollTo({top:0, behavior:'smooth'});
+  recadoAdmin('Escolha o prazo acima e clique em Salvar acesso.', 'ok');
+}
+
+async function excluirUsuario(btn){
+  const em = btn.dataset.em;
+  if(!confirm('Excluir a conta de ' + em + '?\n\n'
+    + 'Apaga login, perfil, histórico e marcações. Não tem volta.\n'
+    + 'O CPF e o email ficam livres para um novo cadastro.')) return;
+  if(!confirm('Confirma mesmo? Esta ação é definitiva.')) return;
+  try{
+    const { error } = await sb.rpc('excluir_usuario', { p_usuario: btn.dataset.id });
+    if(error) throw error;
+    recadoAdmin('Conta de ' + em + ' excluída.', 'aviso');
+    await carregarUsuarios();
+    await carregarAcessos();
+  }catch(e){
+    const m = (e.message || '').toLowerCase();
+    recadoAdmin(
+      m.includes('nao_pode_excluir_a_si_mesma') ? 'Você não pode excluir a própria conta.' :
+      m.includes('sem_permissao') ? 'Sem permissão para excluir.' :
+      'Não foi possível excluir: ' + (e.message || e), 'erro');
+  }
+}
+
+
+
+async function atualizarPainel(){
+  await carregarPedidos();
+  await carregarUsuarios();
+  await carregarAcessos(true);
+}
 
 async function carregarPedidos(){
   try{
